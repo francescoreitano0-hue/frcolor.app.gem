@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -16,14 +17,16 @@
         </div>
     </div>
 
-    <div id="main-app" class="app-container" style="display:none;">
-        <header class="header">
-            <div class="h-top">
-                <span style="font-weight:bold; color:#1e3a5f;">FR COLOR SYSTEM</span>
-                <button onclick="location.reload()" class="btn-esc">Esci</button>
-            </div>
-            <div class="rainbow-line"></div>
-        </header>
+  <header class="header">
+    <div class="h-top">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <img src="logo.png" style="height:35px; width:auto;">
+            <span style="font-weight:bold; color:#1e3a5f; font-size:18px;">FR COLOR SYSTEM</span>
+        </div>
+        <button onclick="location.reload()" class="btn-esc">Esci</button>
+    </div>
+    <div class="rainbow-line"></div>
+</header>
 
         <main class="dashboard">
             <div class="card" onclick="openMod('cantieri')">📁 GESTIONE CANTIERI</div>
