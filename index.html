@@ -3,92 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FR COLOR - Professional App</title>
+    <title>FR Color App</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
-    <div id="login-screen" class="screen active-screen">
-        <div class="login-container">
-            <img src="logo.png" alt="FR Color" class="main-logo">
-            <h1>SISTEMA GESTIONALE</h1>
-            <div class="input-group">
-                <input type="password" id="login-pass" placeholder="PASSWORD ACCESSO">
-                <button onclick="checkLogin()" class="btn-login">ACCEDI</button>
-            </div>
-            <p class="legal">Accesso riservato a FR COLOR di Reitano Francesco</p>
+    <div id="login-screen" class="screen active">
+        <div class="login-card">
+            <img src="logo.png" class="logo-main">
+            <h2>FR COLOR</h2>
+            <input type="password" id="pass" placeholder="Password">
+            <button onclick="checkLogin()" class="btn-primary">ENTRA</button>
         </div>
     </div>
 
     <div id="main-app" class="screen">
-        <header class="app-header">
-            <div class="header-left">
-                <img src="logo.png" class="logo-header">
-                <span class="brand-name">FR COLOR</span>
-            </div>
-            <button onclick="logout()" class="btn-logout">ESCI</button>
+        <header>
+            <img src="logo.png" class="logo-nav">
+            <button onclick="location.reload()" class="btn-exit">X</button>
         </header>
 
-        <main class="dashboard-grid">
-            <section class="action-card" onclick="ui.openModal('irina')">
-                <div class="card-icon">📸</div>
-                <div class="card-content">
-                    <h3>Spettrometro Irina</h3>
-                    <p>Analisi Ultra HD & Codici RAL</p>
-                    <span class="status-tag tag-active">PRONTO</span>
-                </div>
-            </section>
+        <div class="grid-container">
+            <div class="card" onclick="openModule('irina')">🎨 <span>Spettrometro Irina</span></div>
+            <div class="card" onclick="openModule('cantieri')">🏗️ <span>Cantieri & PDF</span></div>
+            <div class="card" onclick="openModule('magazzino')">📦 <span>Magazzino</span></div>
+        </div>
 
-            <section class="action-card" onclick="ui.openModal('cantieri')">
-                <div class="card-icon">🏗️</div>
-                <div class="card-content">
-                    <h3>Archivio Cantieri</h3>
-                    <p>Foto/Video & Documenti PDF</p>
-                    <span class="status-tag tag-active">PRONTO</span>
-                </div>
-            </section>
-
-            <section class="action-card" onclick="ui.openModal('magazzino')">
-                <div class="card-icon">📦</div>
-                <div class="card-content">
-                    <h3>Magazzino</h3>
-                    <p>Gestione Entrata/Uscita</p>
-                    <span class="status-tag tag-active">PRONTO</span>
-                </div>
-            </section>
-
-            <section class="action-card x-card" onclick="ui.openModal('tastox')">
-                <div class="card-icon">❌</div>
-                <div class="card-content">
-                    <h3>Tasto X</h3>
-                    <p>Simulatore Colore Realistico</p>
-                    <span class="status-tag tag-dev">IN SVILUPPO PRO</span>
-                </div>
-            </section>
-        </main>
-
-        <nav class="quick-nav">
-            <a href="https://wa.me/39XXXXXXXXXX" class="nav-item wa" title="WhatsApp">WA</a>
-            <a href="mailto:info@frcolor.it" class="nav-item gm" title="Gmail">@</a>
-            <button onclick="ui.callAI('irina')" class="nav-item ai-irina" title="Irina AI">AI-I</button>
-            <button onclick="ui.callAI('carla')" class="nav-item ai-carla" title="Carla AI">AI-C</button>
-        </nav>
-    </div>
-
-    <div id="app-modal" class="modal">
-        <div class="modal-wrapper">
-            <div class="modal-header">
-                <h2 id="modal-title">Titolo Sezione</h2>
-                <button onclick="ui.closeModal()" class="close-modal">&times;</button>
-            </div>
-            <div id="modal-body" class="modal-body">
-                </div>
+        <div class="dock">
+            <a href="https://wa.me/tuonumero">💬</a>
+            <a href="mailto:info@frcolor.it">📧</a>
+            <button onclick="alert('Avvio Gemini AI...')">♊</button>
+            <button onclick="alert('Avvio ChatGPT...')">🤖</button>
+            <button class="btn-x" onclick="alert('Avvio Tasto X...')">X</button>
         </div>
     </div>
 
-    <canvas id="proc-canvas" style="display:none;"></canvas>
+    <div id="modal-irina" class="modal">
+        <div class="modal-content">
+            <div id="viewport">
+                <video id="video" autoplay playsinline></video>
+                <img id="img-preview">
+                <div id="target"></div>
+            </div>
+            
+            <div class="zoom-ctrl">
+                <input type="range" id="zoom" min="1" max="3" step="0.1" value="1" oninput="applyZoom(this.value)">
+                <span>ZOOM</span>
+            </div>
+
+            <div class="actions">
+                <button onclick="takeSnap()" class="btn-primary">SCATTA</button>
+                <label for="upload" class="btn-secondary">CARICA FOTO</label>
+                <input type="file" id="upload" hidden accept="image/*" onchange="loadFile(event)">
+                <button onclick="closeModal()" class="btn-close">CHIUDI</button>
+            </div>
+
+            <div id="results">
+                <div id="color-box"></div>
+                <div id="color-text">Tocca la foto o scatta per i codici RAL</div>
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>
