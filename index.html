@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FR Color - Suite Gestionale</title>
+    <title>FR COLOR SYSTEM v2.0</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -11,86 +12,97 @@
 
     <div id="login-screen" class="login-container">
         <div class="login-box">
-            <img src="logo.png" alt="FR Color" class="login-logo">
-            <h2>FR Color Login</h2>
-            <input type="password" id="pass-input" placeholder="Inserisci Password">
-            <button class="btn-dark-blue" onclick="checkLogin()">ACCEDI</button>
-            <p id="login-err" class="err-msg"></p>
+            <div class="logo-circle">FR</div>
+            <h1>FR COLOR</h1>
+            <input type="password" id="pass-input" placeholder="Password di Sistema">
+            <button class="btn-main" onclick="checkLogin()">ACCEDI</button>
+            <p id="login-err" class="err"></p>
         </div>
     </div>
 
     <div id="main-app" class="app-container" style="display:none;">
-        <header class="main-header">
-            <div class="header-content">
-                <div class="logo-area">
-                    <img src="logo.png" alt="FR Color" class="logo-img">
-                    <div class="logo-text">
-                        <strong>FR Color</strong>
-                        <span>Dashboard Professionale</span>
-                    </div>
-                </div>
-                <div class="header-btns">
-                    <button class="btn-top" onclick="alert('Configurazione attiva')">⚙️</button>
-                    <button class="btn-top" onclick="logout()">Esci</button>
-                </div>
+        <header class="header">
+            <div class="h-top">
+                <strong>FR COLOR PRO</strong>
+                <button onclick="location.reload()">Esci</button>
             </div>
-            <div class="rainbow-bar"></div>
+            <div class="rainbow-line"></div>
         </header>
 
-        <main class="menu-list">
-            <div class="menu-item" onclick="openMod('cantieri')">
-                <div class="menu-info">
-                    <strong>Gestione Cantieri</strong>
-                    <span>Archivio Foto, Note e Materiali.</span>
-                </div>
-                <div class="badge-active">ATTIVO</div>
+        <nav class="dashboard">
+            <div class="card" onclick="openMod('cantieri')">
+                <h3>📁 Gestione Cantieri</h3>
+                <p>Note, Materiali, Foto e Report PDF</p>
             </div>
-
-            <div class="menu-item" onclick="openMod('irina')">
-                <div class="menu-info">
-                    <strong>Spettrometro Irina</strong>
-                    <span>RAL HD, Zoom e Analisi Schermo.</span>
-                </div>
-                <div class="badge-active">ATTIVO</div>
+            <div class="card" onclick="openMod('irina')">
+                <h3>👁️ Spettrometro Irina HD</h3>
+                <p>Analisi RAL Classic e Codici Schermo</p>
             </div>
-
-            <div class="menu-item" onclick="openMod('magazzino')">
-                <div class="menu-info">
-                    <strong>Magazzino Inventario</strong>
-                    <span>Carico/Scarico e Attrezzature.</span>
-                </div>
-                <div class="badge-active">ATTIVO</div>
+            <div class="card" onclick="openMod('magazzino')">
+                <h3>📦 Magazzino</h3>
+                <p>Inventario Materiali e Attrezzature</p>
             </div>
-        </main>
+        </nav>
 
-        <footer class="main-dock">
-            <div class="dock-item" onclick="window.open('https://wa.me/393290295847')">WhatsApp</div>
-            <div class="dock-item" onclick="window.open('mailto:info@frcolor.it')">Gmail</div>
-            <div class="dock-icon" onclick="alert('Gemini Live')">♊</div>
-            <div class="dock-icon" onclick="alert('ChatGPT')">🤖</div>
-            <div class="dock-icon x-btn" onclick="alert('Tasto X')">X</div>
+        <footer class="dock">
+            <div onclick="window.open('https://wa.me/393290295847')">WA</div>
+            <div onclick="window.open('mailto:info@frcolor.it')">Mail</div>
+            <div class="icon-a">♊</div>
+            <div class="icon-a">🤖</div>
+            <div class="btn-x">X</div>
         </footer>
     </div>
 
-    <div id="mod-magazzino" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h2>Magazzino</h2>
-                <button class="close-x" onclick="closeMod('magazzino')">x</button>
+    <div id="mod-cantieri" class="modal">
+        <div class="modal-content">
+            <div class="modal-h"><h2>CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
+            <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
+            <button class="btn-main" onclick="addCantiere()">CREA CARTELLA</button>
+            <div id="c-list" class="list-area"></div>
+        </div>
+    </div>
+
+    <div id="mod-irina" class="modal">
+        <div class="modal-content">
+            <div class="modal-h"><h2>IRINA SPETTROMETRO</h2><button onclick="closeMod('irina')">✕</button></div>
+            <div class="cam-box">
+                <video id="v" autoplay playsinline></video>
+                <div class="crosshair"></div>
             </div>
-            <div class="tab-box">
-                <button id="tab-mat" class="tab-btn active" onclick="switchTab('mat')">Materiali</button>
-                <button id="tab-att" class="tab-btn" onclick="switchTab('att')">Attrezzature</button>
+            <div class="controls">
+                <span>Zoom</span>
+                <input type="range" min="1" max="5" step="0.1" value="1" oninput="applyZoom(this.value)">
             </div>
-            <div class="modal-body">
-                <input type="text" id="m-nome" placeholder="Nome Articolo...">
-                <input type="number" id="m-qta" placeholder="Quantità">
-                <div class="btn-group-row">
-                    <button class="btn-in" onclick="updateStock('IN')">ENTRATA (+)</button>
-                    <button class="btn-out" onclick="updateStock('OUT')">USCITA (-)</button>
+            <div class="results" id="res-area">
+                <div id="color-preview" class="color-dot"></div>
+                <div class="color-text">
+                    <b id="out-ral">RAL: --</b><br>
+                    <span id="out-hex">HEX: --</span><br>
+                    <span id="out-rgb">RGB: --</span><br>
+                    <small id="out-screen">Screen: --</small>
                 </div>
-                <div id="m-list" class="scroll-area"></div>
             </div>
+            <div class="btn-grid">
+                <button class="btn-main" onclick="takeReading()">LEGGI COLORE</button>
+                <label class="btn-sec">GALLERIA <input type="file" hidden accept="image/*" onchange="analyzeImg(this)"></label>
+            </div>
+        </div>
+    </div>
+
+    <div id="mod-magazzino" class="modal">
+        <div class="modal-content">
+            <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
+            <div class="tabs">
+                <button id="t-mat" class="active" onclick="setTab('mat')">Materiali</button>
+                <button id="t-att" onclick="setTab('att')">Attrezzature</button>
+            </div>
+            <input type="text" id="m-nome" placeholder="Articolo...">
+            <input type="number" id="m-qta" placeholder="Quantità">
+            <div class="btn-grid">
+                <button class="btn-in" onclick="updStock('IN')">CARICO +</button>
+                <button class="btn-out" onclick="updStock('OUT')">SCARICO -</button>
+            </div>
+            <div id="m-list" class="list-area"></div>
         </div>
     </div>
 
