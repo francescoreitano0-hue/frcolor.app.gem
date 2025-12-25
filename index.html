@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FR Color - Dashboard</title>
+    <title>FR Color - Sistema Gestionale</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -19,8 +21,7 @@
                     </div>
                 </div>
                 <div class="header-btns">
-                    <button class="icon-btn">⚙️</button>
-                    <button class="btn-exit">Esci</button>
+                    <button class="btn-exit" onclick="location.reload()">Esci</button>
                 </div>
             </div>
             <div class="rainbow-bar"></div>
@@ -37,51 +38,59 @@
 
             <div class="menu-item" onclick="openMod('irina')">
                 <div class="menu-info">
-                    <strong>Spettrometro</strong>
-                    <span>Prelievo colore da foto.</span>
+                    <strong>Spettrometro Irina</strong>
+                    <span>Lettura RAL HD e codici schermo.</span>
                 </div>
                 <div class="badge-active">ATTIVO</div>
             </div>
 
-            <div class="menu-item" onclick="openMod('irina-ai')">
+            <div class="menu-item" onclick="openMod('magazzino')">
                 <div class="menu-info">
-                    <strong>Irina</strong>
-                    <span>Tua segretaria (AI Gemini).</span>
-                </div>
-                <div class="badge-active">ATTIVO</div>
-            </div>
-
-            <div class="menu-item" onclick="alert('Carla attiva')">
-                <div class="menu-info">
-                    <strong>Carla</strong>
-                    <span>Assistente (AI ChatGPT).</span>
-                </div>
-                <div class="badge-active">ATTIVO</div>
-            </div>
-
-            <div class="menu-item" onclick="alert('Tasto X in sviluppo')">
-                <div class="menu-info">
-                    <strong>Tasto X</strong>
-                    <span>Simulazione Colore AI.</span>
+                    <strong>Magazzino Inventario</strong>
+                    <span>Materiali e Attrezzature.</span>
                 </div>
                 <div class="badge-active">ATTIVO</div>
             </div>
         </main>
+
+        <footer class="main-dock">
+            <div class="dock-label" onclick="window.open('https://wa.me/')">WhatsApp</div>
+            <div class="dock-label" onclick="window.open('mailto:test@test.it')">Gmail</div>
+            <div class="dock-icon" onclick="alert('Gemini Live')">♊</div>
+            <div class="dock-icon" onclick="alert('ChatGPT')">🤖</div>
+            <div class="dock-icon x-btn" onclick="alert('Tasto X: Sviluppo FR')">X</div>
+        </footer>
     </div>
 
     <div id="mod-cantieri" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
-                <h2>Archiviazione Cantiere</h2>
+                <h2>I Tuoi Cantieri</h2>
                 <button class="close-x" onclick="closeMod('cantieri')">x</button>
             </div>
             <div class="modal-body">
-                <div class="action-row">
-                    <button class="btn-dark-blue">📷 Scatta Foto</button>
-                    <button class="btn-white-border">🖼️ Galleria</button>
-                </div>
-                <p class="status-msg">In attesa di nuovi cantieri...</p>
+                <input type="text" id="c-nome" placeholder="Nome nuovo cantiere (es: Condominio Rossi)">
+                <button class="btn-dark-blue" onclick="addCantiere()">CREA CARTELLA</button>
+                <div id="c-list" class="scroll-area"></div>
             </div>
+        </div>
+    </div>
+
+    <div id="mod-irina" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Spettrometro Irina HD</h2>
+                <button class="close-x" onclick="closeMod('irina')">x</button>
+            </div>
+            <div class="camera-box">
+                <video id="v" autoplay playsinline></video>
+                <div class="aim"></div>
+            </div>
+            <div id="result-box" class="result-area">
+                <div id="color-circle" class="circle"></div>
+                <div id="color-codes">Inquadra e premi "Leggi"</div>
+            </div>
+            <button class="btn-dark-blue" onclick="takeReading()">LEGGI COLORE RAL</button>
         </div>
     </div>
 
