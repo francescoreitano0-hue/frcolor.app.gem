@@ -1,34 +1,28 @@
 :root { --navy: #1e3a5f; --bg: #f4f6f9; --white: #ffffff; --border: #e2e8f0; --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff); }
 * { box-sizing: border-box; font-family: -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
-body { margin: 0; background: var(--bg); color: #334155; }
-.login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: white; }
-.login-box { text-align: center; width: 85%; max-width: 400px; }
-.login-logo { width: 120px; margin-bottom: 20px; }
-.header { background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-.h-top { display: flex; justify-content: space-between; padding: 15px; align-items: center; }
+body { margin: 0; background: var(--bg); }
+.header { background: white; border-bottom: 1px solid var(--border); }
+.h-top { display: flex; justify-content: space-between; padding: 10px 15px; align-items: center; }
 .rainbow-line { height: 4px; background: var(--rainbow); }
 .dashboard { padding: 15px; }
-.card { background: white; border-radius: 15px; padding: 30px; margin-bottom: 15px; border: 1px solid var(--border); text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: flex-end; }
-.modal-content { background: white; width: 100%; border-radius: 25px 25px 0 0; padding: 20px; max-height: 90vh; overflow-y: auto; }
-.cam-box { width: 100%; height: 350px; background: black; border-radius: 20px; overflow: hidden; position: relative; }
-#v { width: 100%; height: 100%; object-fit: cover; }
-.crosshair { position: absolute; top: 50%; left: 50%; width: 30px; height: 30px; border: 2px solid white; border-radius: 50%; transform: translate(-50%,-50%); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-.results { display: flex; gap: 15px; background: #f8fafc; padding: 20px; border-radius: 15px; margin: 15px 0; align-items: center; border: 1px solid var(--border); }
-.color-dot { width: 60px; height: 60px; border-radius: 12px; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-.item-row { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #f1f5f9; background: white; }
-.folder { background: white; padding: 20px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 15px; }
-.gal { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; }
-.gal img { width: 100px; height: 100px; object-fit: cover; border-radius: 12px; }
-input, textarea { width: 100%; padding: 15px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; font-size: 16px; background: #f8fafc; }
-.btn-main { background: var(--navy); color: white; border: none; width: 100%; padding: 20px; border-radius: 15px; font-weight: bold; font-size: 16px; }
-.btn-sec { display: block; background: #f1f5f9; text-align: center; padding: 15px; border-radius: 12px; margin-top: 5px; font-weight: bold; color: var(--navy); border: 1px solid var(--border); }
-.btn-grid-row { display: flex; gap: 10px; margin-top: 10px; }
-.btn-in { flex: 1; background: #10b981; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; }
-.btn-out { flex: 1; background: #ef4444; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; }
-.dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0 30px; border-top: 1px solid var(--border); z-index: 50; }
-.dock a { text-decoration: none; color: var(--navy); font-weight: bold; font-size: 13px; }
-.btn-x { color: #ef4444 !important; }
-.tabs { display: flex; gap: 5px; margin-bottom: 20px; background: #f1f5f9; padding: 5px; border-radius: 15px; }
-.tabs button { flex: 1; border: none; padding: 12px; border-radius: 12px; font-weight: bold; color: #64748b; }
-.tabs button.active { background: white; color: var(--navy); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 12px; border: 1px solid var(--border); text-align: center; font-weight: bold; color: var(--navy); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: flex-end; }
+.modal-content { background: white; width: 100%; border-radius: 20px 20px 0 0; padding: 20px; max-height: 90vh; overflow-y: auto; }
+.cam-box { width: 100%; height: 300px; background: black; border-radius: 15px; overflow: hidden; position: relative; }
+#v, #c-view { width: 100%; height: 100%; object-fit: cover; }
+.results { display: flex; gap: 10px; background: #f8fafc; padding: 15px; border-radius: 12px; margin: 15px 0; align-items: center; border: 1px solid var(--border); }
+.color-dot { width: 50px; height: 50px; border-radius: 8px; border: 2px solid white; }
+.btn-main { background: var(--navy); color: white; border: none; width: 100%; padding: 15px; border-radius: 10px; font-weight: bold; margin-bottom: 10px; }
+.btn-grid-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.btn-in { flex: 1; background: #10b981; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; text-align: center; }
+.btn-out { flex: 1; background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; text-align: center; }
+.dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0 30px; border-top: 1px solid var(--border); }
+.dock a { text-decoration: none; color: var(--navy); font-size: 12px; font-weight: bold; }
+.item-row { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid var(--border); }
+.folder { background: white; padding: 15px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 15px; }
+.gal { display: flex; gap: 5px; overflow-x: auto; margin: 10px 0; }
+.gal img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+textarea, input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; }
+.tabs { display: flex; gap: 5px; margin-bottom: 15px; background: #f1f5f9; padding: 5px; border-radius: 10px; }
+.tabs button { flex: 1; border: none; padding: 10px; border-radius: 8px; font-weight: bold; color: #64748b; background: none; }
+.tabs button.active { background: white; color: var(--navy); }
