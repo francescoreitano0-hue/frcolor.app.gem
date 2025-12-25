@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div id="main-app" class="app-container" style="display:none;">
+    <div id="main-app" style="display:none;">
         <header class="header">
             <div class="h-top">
                 <img src="logo.png" alt="Logo" style="height: 35px;">
@@ -40,23 +40,23 @@
         </footer>
     </div>
 
-    <div id="mod-cantieri" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
-        <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
-        <button class="btn-main" onclick="addCantiere()">CREA CARTELLA</button>
-        <div id="c-list"></div>
-    </div></div>
-
     <div id="mod-irina" class="modal"><div class="modal-content">
         <div class="modal-h"><h2>IRINA HD</h2><button onclick="closeMod('irina')">✕</button></div>
         <div class="cam-box">
             <video id="v" autoplay playsinline></video>
             <canvas id="c-view" style="display:none;"></canvas>
-            <div class="crosshair"></div>
+            <div class="pointer-center"></div>
         </div>
+        
+        <div class="zoom-ctrl">
+            <span>-</span>
+            <input type="range" id="zoom-range" min="1" max="3" step="0.1" value="1" oninput="applyZoom(this.value)">
+            <span>+</span>
+        </div>
+
         <div class="results">
             <div id="color-preview" class="color-dot"></div>
-            <div id="out-text" class="color-text">Tocca la foto per leggere il colore</div>
+            <div id="out-text" class="color-text">Tocca lo schermo o usa il centro</div>
         </div>
         <div class="btn-grid">
             <button class="btn-main" onclick="takeReading()">LEGGI CENTRO</button>
@@ -65,6 +65,13 @@
                 <label class="btn-out">GALLERIA <input type="file" hidden accept="image/*" onchange="analyzeImg(this)"></label>
             </div>
         </div>
+    </div></div>
+
+    <div id="mod-cantieri" class="modal"><div class="modal-content">
+        <div class="modal-h"><h2>CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
+        <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
+        <button class="btn-main" onclick="addCantiere()">CREA CARTELLA</button>
+        <div id="c-list"></div>
     </div></div>
 
     <div id="mod-magazzino" class="modal"><div class="modal-content">
