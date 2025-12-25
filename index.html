@@ -31,7 +31,7 @@
         <main class="dashboard">
             <div class="card" onclick="openMod('cantieri')">📁 GESTIONE CANTIERI</div>
             <div class="card" onclick="openMod('irina')">👁️ IRINA SPETTROMETRO HD</div>
-            <div class="card" onclick="openMod('magazzino')">📦 MAGAZZINO</div>
+            <div class="card" onclick="openMod('magazzino')">📦 MAGAZZINO & NOTE</div>
         </main>
 
         <footer class="dock">
@@ -74,17 +74,13 @@
 
     <div id="mod-magazzino" class="modal"><div class="modal-content">
         <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
-        <input type="text" id="m-nome" placeholder="Nome prodotto...">
+        <input type="text" id="m-nome" placeholder="Articolo...">
         <input type="number" id="m-qta" placeholder="Quantità">
         <textarea id="m-note" placeholder="Note materiale..."></textarea>
         <div class="btn-grid">
             <button class="btn-in" onclick="updStock('IN')">CARICO</button>
             <button class="btn-out" onclick="updStock('OUT')">SCARICO</button>
         </div>
-        <hr style="margin:20px 0;">
-        <input type="text" id="a-nome" placeholder="Nome attrezzo...">
-        <textarea id="a-note" placeholder="Note attrezzo..."></textarea>
-        <button class="btn-main" onclick="addAttrezzo()" style="background:var(--gray);">AGGIUNGI ATTREZZO</button>
         <div id="m-list" style="margin-top:15px;"></div>
     </div></div>
 
