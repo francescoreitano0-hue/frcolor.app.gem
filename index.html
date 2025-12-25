@@ -2,62 +2,77 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FR Color - App Personale</title>
-    <style>
-        body { background-color: #f4f4f9; font-family: sans-serif; margin: 0; padding: 20px; }
-        .header { text-align: center; padding: 20px; }
-        .logo { max-width: 150px; } /* Qui useremo il tuo logo ufficiale */
-        .card { 
-            background: white; border-radius: 15px; padding: 15px; margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;
-        }
-        .btn-status { background: #eee; border-radius: 20px; padding: 5px 15px; font-size: 12px; font-weight: bold; }
-        .attivo { color: #2ecc71; border: 1px solid #2ecc71; }
-        .collegare { color: #e67e22; border: 1px solid #e67e22; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FR Color - App Professionale</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-
-    <div class="header">
-        <img src="logo-fr-color.png" alt="FR Color" class="logo">
-        <h1>FR COLOR - App Personale</h1>
-    </div>
-
-    <div class="card" onclick="apriCantiere()">
-        <div>
-            <strong>Archiviazione Cantiere</strong><br>
-            <small>Foto/Video (Ultra HD) e Documenti PDF</small>
+    <div id="login-screen" class="screen">
+        <div class="card login-card">
+            <img src="logo.png" alt="FR Color" class="logo-large">
+            <h2>Accesso Riservato</h2>
+            <input type="password" id="login-pass" placeholder="Inserisci Password">
+            <button onclick="checkLogin()" class="btn-main">ENTRA NELL'APP</button>
         </div>
-        <div class="btn-status attivo">ATTIVO</div>
     </div>
 
-    <div class="card" onclick="avviaIrina()">
-        <div>
-            <strong>Spettrometro Irina</strong><br>
-            <small>3 Alternative RAL + % + Ultra HD [cite: 2025-12-24]</small>
+    <div id="main-app" class="screen" style="display:none;">
+        <header>
+            <img src="logo.png" alt="FR Color" class="logo-small">
+            <button onclick="logout()" class="btn-exit">Esci</button>
+        </header>
+
+        <div class="grid-container">
+            <div class="card main-btn" onclick="openSection('irina')">
+                <span class="icon">📸</span>
+                <strong>Spettrometro Irina</strong>
+                <p>Ultra HD - 3 Alternative RAL</p>
+                <div class="badge active">ATTIVO</div>
+            </div>
+
+            <div class="card main-btn" onclick="openSection('cantieri')">
+                <span class="icon">🏗️</span>
+                <strong>Archivio Cantieri</strong>
+                <p>Foto, Video e PDF</p>
+                <div class="badge active">ATTIVO</div>
+            </div>
+
+            <div class="card main-btn" onclick="openSection('magazzino')">
+                <span class="icon">📦</span>
+                <strong>Magazzino</strong>
+                <p>Entrata/Uscita Materiali</p>
+                <div class="badge active">ATTIVO</div>
+            </div>
+
+            <div class="card main-btn x-btn" onclick="openSection('tastox')">
+                <span class="icon">❌</span>
+                <strong>Tasto X</strong>
+                <p>Simulatore Colore (Sviluppo Pro)</p>
+                <div class="badge warning">IN CORSO</div>
+            </div>
         </div>
-        <div class="btn-status attivo">ATTIVO</div>
+
+        <div class="quick-links">
+            <a href="https://wa.me/tuonumero" target="_blank" class="link-icon wa">WA</a>
+            <a href="mailto:tuamail@gmail.com" class="link-icon mail">@</a>
+            <button onclick="askAI('irina')" class="link-icon ai">Irina AI</button>
+            <button onclick="askAI('carla')" class="link-icon ai">Carla AI</button>
+        </div>
     </div>
 
-    <div class="card">
-        <div><strong>Irina (AI)</strong><br><small>Analisi testi e immagini (Gemini)</small></div>
-        <div class="btn-status collegare">DA COLLEGARE</div>
+    <div id="modal-irina" class="modal">
+        <div class="modal-content">
+            <video id="video" autoplay playsinline></video>
+            <div id="capture-ui">
+                <div id="color-preview"></div>
+                <div id="color-results">Punta per leggere il colore</div>
+                <button onclick="captureColor()" class="btn-capture">SCATTA & ANALIZZA</button>
+                <button onclick="closeModal()" class="btn-close">CHIUDI</button>
+            </div>
+        </div>
     </div>
 
-    <div class="card">
-        <div><strong>Tasto X</strong><br><small>Simulatore Colore/Decorazioni</small></div>
-        <div class="btn-status collegare">DA COLLEGARE</div>
-    </div>
-
-    <script>
-        function avviaIrina() {
-            alert("Avvio Spettrometro Irina in Ultra HD... [cite: 2025-12-24]");
-            // Qui inseriremo il codice JavaScript per la lettura colore LAB/RGB/RAL
-        }
-        function apriCantiere() {
-            // Logica per archivio cantiere e documenti PDF
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
