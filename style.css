@@ -5,69 +5,47 @@
     --white: #ffffff;
     --border: #e2e8f0;
     --text-main: #1e293b;
-    --text-sec: #64748b;
     --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text-main); overflow-x: hidden; }
+body { margin: 0; font-family: sans-serif; background: var(--bg); color: var(--text-main); }
 
-/* --- LOGIN --- */
 .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--white); }
 .login-box { text-align: center; width: 85%; max-width: 350px; }
-.logo-circle { width: 80px; height: 80px; background: var(--navy); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; margin: 0 auto 20px; }
-h1 { font-size: 24px; color: var(--navy); margin-bottom: 5px; }
-.err { color: #ef4444; font-size: 13px; margin-top: 10px; font-weight: bold; }
+.login-logo { max-width: 150px; height: auto; margin-bottom: 20px; }
 
-/* --- HEADER --- */
 .header { background: var(--white); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); }
 .h-top { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
-.h-top strong { font-size: 18px; color: var(--navy); }
-.h-top button { background: none; border: 1px solid var(--border); padding: 5px 12px; border-radius: 8px; font-weight: bold; }
 .rainbow-line { height: 4px; background: var(--rainbow); }
 
-/* --- DASHBOARD --- */
 .dashboard { padding: 20px; padding-bottom: 100px; }
-.card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-.card h3 { margin: 0 0 5px 0; font-size: 17px; color: var(--navy); }
-.card p { margin: 0; font-size: 13px; color: var(--text-sec); }
+.card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border); }
 
-/* --- MODALI --- */
 .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; align-items: flex-end; }
 .modal-content { background: var(--white); width: 100%; border-radius: 30px 30px 0 0; padding: 25px; max-height: 92vh; overflow-y: auto; }
 .modal-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.modal-h h2 { margin: 0; font-size: 20px; color: var(--navy); }
-.modal-h button { background: var(--bg); border: none; width: 35px; height: 35px; border-radius: 50%; font-weight: bold; }
 
-/* --- SPETTROMETRO --- */
-.cam-box { width: 100%; height: 300px; background: #000; border-radius: 20px; position: relative; overflow: hidden; margin-bottom: 15px; }
+.cam-box { width: 100%; height: 300px; background: #000; border-radius: 20px; position: relative; overflow: hidden; }
 #v { width: 100%; height: 100%; object-fit: cover; }
-.crosshair { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; border: 2px solid white; border-radius: 50%; transform: translate(-50%,-50%); box-shadow: 0 0 0 1000px rgba(0,0,0,0.2); }
-.results { display: flex; gap: 15px; align-items: center; background: var(--bg); padding: 15px; border-radius: 15px; margin-bottom: 15px; }
-.color-dot { width: 60px; height: 60px; border-radius: 15px; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.color-text { font-size: 14px; font-weight: bold; line-height: 1.4; }
+.crosshair { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; border: 2px solid white; border-radius: 50%; transform: translate(-50%,-50%); }
 
-/* --- CANTIERI & MAGAZZINO --- */
+.results { display: flex; gap: 15px; align-items: center; background: var(--bg); padding: 15px; border-radius: 15px; margin: 15px 0; }
+.color-dot { width: 60px; height: 60px; border-radius: 12px; border: 3px solid white; }
+
 .folder { background: var(--bg); padding: 15px; border-radius: 20px; margin-bottom: 15px; border: 1px solid var(--border); }
-.gal { display: flex; gap: 10px; overflow-x: auto; margin: 10px 0; padding-bottom: 5px; }
-.gal img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 1px solid var(--white); }
-.tabs { display: flex; gap: 5px; background: var(--bg); padding: 5px; border-radius: 12px; margin-bottom: 15px; }
-.tabs button { flex: 1; border: none; padding: 10px; border-radius: 10px; font-weight: bold; color: var(--text-sec); }
-.tabs button.active { background: var(--white); color: var(--navy); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.gal { display: flex; gap: 10px; overflow-x: auto; margin: 10px 0; }
+.gal img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; }
 
-/* --- INPUT & BOTTONI --- */
-input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); font-size: 15px; margin-bottom: 10px; outline: none; }
-.btn-main { background: var(--navy); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 16px; }
-.btn-sec { display: block; text-align: center; background: white; border: 1px solid var(--navy); color: var(--navy); padding: 12px; border-radius: 12px; font-weight: bold; margin-top: 10px; }
-.btn-grid { display: flex; flex-direction: column; gap: 5px; }
-.btn-in { background: #22c55e; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; }
-.btn-out { background: #ef4444; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; }
-.actions { display: flex; gap: 8px; margin-top: 10px; }
-.actions button { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: white; font-weight: bold; font-size: 12px; }
-.actions button.del { color: #ef4444; border-color: #fee2e2; }
+.tabs { display: flex; background: var(--bg); padding: 5px; border-radius: 12px; margin-bottom: 15px; }
+.tabs button { flex: 1; border: none; padding: 10px; border-radius: 10px; font-weight: bold; }
+.tabs button.active { background: var(--white); color: var(--navy); }
 
-/* --- DOCK --- */
-.dock { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; align-items: center; padding: 15px 0 25px; border-top: 1px solid var(--border); }
-.dock div { font-weight: bold; font-size: 14px; color: var(--navy); }
-.icon-a { font-size: 20px; }
+input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 10px; }
+.btn-main { background: var(--navy); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: bold; }
+.btn-grid-row { display: flex; gap: 10px; }
+.btn-in { flex: 1; background: #22c55e; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; }
+.btn-out { flex: 1; background: #ef4444; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; }
+
+.dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0 25px; border-top: 1px solid var(--border); }
 .btn-x { color: #ef4444; font-weight: 900; }
