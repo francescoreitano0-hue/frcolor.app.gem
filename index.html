@@ -1,90 +1,77 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FR COLOR OFFICIAL APP</title>
+    <title>FR COLOR - Sistema Integrato</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div id="login-screen" class="screen active">
-        <div class="card-login">
-            <img src="logo.png" class="logo-main">
-            <h1>FR COLOR</h1>
-            <input type="password" id="pass" placeholder="Inserisci Password">
-            <button onclick="checkLogin()" class="btn-main">ACCEDI</button>
-        </div>
-    </div>
+    <div id="app">
+        <div id="dashboard" class="screen active">
+            <header>
+                <img src="logo.png" class="logo">
+                <div class="header-tools">
+                    <button onclick="openAI('irina')">Irina (Gemini)</button>
+                    <button onclick="openAI('carla')">Carla (GPT)</button>
+                </div>
+            </header>
 
-    <div id="main-app" class="screen">
-        <header>
-            <img src="logo.png" class="logo-nav">
-            <button onclick="location.reload()" class="btn-exit">ESCI</button>
-        </header>
-
-        <div class="menu-grid">
-            <div class="menu-card" onclick="openMod('irina')">🎨 <span>Spettrometro Irina</span></div>
-            <div class="menu-card" onclick="openMod('cantieri')">🏗️ <span>Gestione Cantieri</span></div>
-            <div class="menu-card" onclick="openMod('magazzino')">📦 <span>Magazzino</span></div>
-        </div>
-
-        <div class="dock">
-            <a href="https://wa.me/vostro_numero" title="WhatsApp">💬</a>
-            <a href="mailto:info@frcolor.it" title="Gmail">📧</a>
-            <button onclick="openAI('gemini')">♊</button>
-            <button onclick="openAI('chatgpt')">🤖</button>
-            <button class="btn-x-dock" onclick="openX()">X</button>
-        </div>
-    </div>
-
-    <div id="mod-irina" class="modal">
-        <div class="modal-header">
-            <button onclick="closeMod('mod-irina')">← INDIETRO</button>
-            <h3>SPETTROMETRO IRINA</h3>
-        </div>
-        <div class="view-container">
-            <video id="video" autoplay playsinline></video>
-            <img id="img-preview" style="display:none;">
-            <div id="target-point"></div>
-        </div>
-        <div class="zoom-bar">
-            <span>ZOOM</span>
-            <input type="range" id="zoom-range" min="1" max="4" step="0.1" value="1" oninput="handleZoom(this.value)">
-        </div>
-        <div class="action-grid">
-            <button onclick="takeSnap()" class="btn-main">SCATTA FOTO</button>
-            <label for="file-up" class="btn-sec">CARICA FOTO</label>
-            <input type="file" id="file-up" hidden accept="image/*" onchange="loadPhoto(event)">
-        </div>
-        <div id="results-area">
-            <div id="color-circle"></div>
-            <div id="color-info">Scatta o tocca la foto per i codici RAL</div>
-        </div>
-    </div>
-
-    <div id="mod-cantieri" class="modal">
-        <div class="modal-header"><button onclick="closeMod('mod-cantieri')">←</button><h3>CANTIERI</h3></div>
-        <div class="content">
-            <input type="text" id="cantiere-nome" placeholder="Nome Cantiere">
-            <button onclick="addCantiere()" class="btn-main">CREA NUOVO</button>
-            <div id="list-cantieri"></div>
-        </div>
-    </div>
-
-    <div id="mod-magazzino" class="modal">
-        <div class="modal-header"><button onclick="closeMod('mod-magazzino')">←</button><h3>MAGAZZINO</h3></div>
-        <div class="content">
-            <input type="text" id="item-name" placeholder="Materiale">
-            <input type="number" id="item-qta" placeholder="Quantità">
-            <div class="action-grid">
-                <button onclick="updateStock('in')" class="btn-main">ENTRATA (+)</button>
-                <button onclick="updateStock('out')" class="btn-sec">USCITA (-)</button>
+            <div class="grid">
+                <div class="card" onclick="nav('spettrometro')">
+                    <h3>🎨 Spettrometro Irina</h3>
+                    <p>Ultra HD, 3 RAL + %</p>
+                </div>
+                <div class="card" onclick="nav('cantieri')">
+                    <h3>🏗️ Gestione Cantieri</h3>
+                    <p>Foto, Video & PDF Documenti</p>
+                </div>
+                <div class="card" onclick="nav('magazzino')">
+                    <h3>📦 Magazzino & Inventario</h3>
+                    <p>Materiali vs Attrezzature</p>
+                </div>
+                <div class="card" onclick="nav('archivio')">
+                    <h3>📄 Archivio Tecnico</h3>
+                    <p>Schede Prodotti & Gmail</p>
+                </div>
             </div>
-            <div id="list-magazzino"></div>
+
+            <footer class="dock">
+                <a href="https://wa.me/tuonumero">WA</a>
+                <a href="#" onclick="syncGmail()">Gmail</a>
+                <button class="btn-x" onclick="window.open('https://tuosito.it/tasto-x')">Tasto X</button>
+            </footer>
+        </div>
+
+        <div id="screen-cantieri" class="screen">
+            <nav class="sub-nav"><button onclick="nav('dashboard')">←</button><h2>Cantieri</h2></nav>
+            <div id="cantiere-list"></div>
+            <button class="floating-btn" onclick="creaNuovoCantiere()">+</button>
+        </div>
+
+        <div id="screen-magazzino" class="screen">
+            <nav class="sub-nav"><button onclick="nav('dashboard')">←</button><h2>Magazzino</h2></nav>
+            <div class="tabs">
+                <button onclick="tabMag('materiali')">Materiali</button>
+                <button onclick="tabMag('attrezzature')">Attrezzature</button>
+            </div>
+            <div id="magazzino-content"></div>
+        </div>
+
+        <div id="screen-camera" class="screen">
+            <video id="cam-view" autoplay playsinline></video>
+            <div class="cam-overlay">
+                <button onclick="setCamMode('photo')">FOTO</button>
+                <button onclick="setCamMode('doc')">DOCUMENTI (PDF)</button>
+            </div>
+            <div class="cam-actions">
+                <button onclick="capture()">SCATTA</button>
+                <label for="up">CARICA</label><input type="file" id="up" hidden onchange="handleUpload(event)">
+                <button onclick="closeCam()">X</button>
+            </div>
         </div>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
