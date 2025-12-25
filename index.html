@@ -8,112 +8,117 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div id="login-screen" class="screen active">
-        <div class="login-card">
-            <img src="logo.png" class="logo-main">
-            <h2>FR COLOR</h2>
-            <input type="password" id="pass" placeholder="Password Accesso">
-            <button onclick="checkLogin()" class="btn-primary">ACCEDI</button>
-        </div>
-    </div>
 
-    <div id="main-app" class="screen">
+    <div id="main-app" class="screen active">
         <header>
-            <img src="logo.png" class="logo-header">
-            <div class="ai-controls">
-                <button onclick="alert('Irina (Gemini) pronta')">Irina</button>
-                <button onclick="alert('Carla (ChatGPT) pronta')">Carla</button>
+            <div class="logo-container">
+                <img src="logo.png" alt="FR Color" class="logo-main">
+            </div>
+            <div class="header-actions">
+                <button class="pill-btn" onclick="openMod('irina')">Irina</button>
+                <button class="pill-btn" onclick="alert('Carla (AI) pronta')">Carla</button>
             </div>
         </header>
 
-        <div class="container">
-            <div class="card" onclick="openMod('cantieri')">
-                <div class="card-info">
-                    <strong>Gestione Cantieri</strong>
+        <div class="main-container">
+            <div class="app-card" onclick="openMod('cantieri')">
+                <div class="card-text">
+                    <h3>Gestione Cantieri</h3>
                     <p>Archivio Foto, Video e Documenti</p>
                 </div>
-                <div class="status active">ATTIVO</div>
+                <div class="badge-status">ATTIVO</div>
             </div>
 
-            <div class="card" onclick="openMod('irina')">
-                <div class="card-info">
-                    <strong>Spettrometro Irina</strong>
+            <div class="app-card" onclick="openMod('irina')">
+                <div class="card-text">
+                    <h3>Spettrometro Irina</h3>
                     <p>Lettura RAL Ultra HD e % Colore</p>
                 </div>
-                <div class="status active">ATTIVO</div>
+                <div class="badge-status">ATTIVO</div>
             </div>
 
-            <div class="card" onclick="openMod('magazzino')">
-                <div class="card-info">
-                    <strong>Magazzino Inventario</strong>
+            <div class="app-card" onclick="openMod('magazzino')">
+                <div class="card-text">
+                    <h3>Magazzino Inventario</h3>
                     <p>Materiali e Attrezzature</p>
                 </div>
-                <div class="status active">ATTIVO</div>
+                <div class="badge-status">ATTIVO</div>
             </div>
 
-            <div class="card disabled">
-                <div class="card-info">
-                    <strong>Archivio Tecnico</strong>
+            <div class="app-card disabled">
+                <div class="card-text">
+                    <h3>Archivio Tecnico</h3>
                     <p>Schede Tecniche PDF e Gmail</p>
                 </div>
-                <div class="status gray">PROX</div>
+                <div class="badge-status badge-prox">PROX</div>
             </div>
         </div>
 
-        <footer class="dock">
-            <a href="https://wa.me/39XXXXXXXXXX">WhatsApp</a>
-            <a href="mailto:info@frcolor.it">Gmail</a>
-            <button onclick="alert('Gemini')">♊</button>
-            <button onclick="alert('ChatGPT')">🤖</button>
-            <button class="x-btn" onclick="window.open('https://tastox.it')">X</button>
+        <footer class="main-dock">
+            <div class="dock-item" onclick="window.open('https://wa.me/39XXXXXXXXXX')">WhatsApp</div>
+            <div class="dock-item" onclick="window.open('mailto:info@frcolor.it')">Gmail</div>
+            <div class="dock-icon gemini-color" onclick="alert('Gemini Live')">♊</div>
+            <div class="dock-icon gpt-color" onclick="alert('ChatGPT Assistant')">🤖</div>
+            <div class="dock-icon x-red" onclick="alert('App Tasto X')">X</div>
         </footer>
     </div>
 
-    <div id="mod-irina" class="modal">
-        <div class="modal-h"><button onclick="closeMod('irina')">CHIUDI</button><h3>IRINA HD</h3></div>
-        <div class="viewport">
-            <video id="v" autoplay playsinline></video>
-            <img id="img-v" style="display:none;">
-            <div id="mirino"></div>
+    <div id="mod-cantieri" class="modal-overlay">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeMod('cantieri')">INDIETRO</button>
+            <h2>ARCHIVIO CANTIERI</h2>
         </div>
-        <div class="controls-panel">
-            <input type="range" id="zoom" min="1" max="5" step="0.1" value="1" oninput="applyZoom(this.value)">
-            <div class="btn-group">
-                <button onclick="snap()" class="btn-primary">SCATTA</button>
-                <label for="up-f" class="btn-sec">CARICA</label>
-                <input type="file" id="up-f" hidden onchange="loadF(event)">
+        <div class="modal-content">
+            <div class="input-group">
+                <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
+                <button class="btn-create-folder" onclick="addCantiere()">CREA CARTELLA</button>
             </div>
-        </div>
-        <div id="result-box">
-            <div id="color-sample"></div>
-            <div id="color-data">Punta il mirino...</div>
+            <div id="c-list" class="folder-grid">
+                </div>
         </div>
     </div>
 
-    <div id="mod-cantieri" class="modal">
-        <div class="modal-h"><button onclick="closeMod('cantieri')">INDIETRO</button><h3>ARCHIVIO CANTIERI</h3></div>
-        <div class="content-padding">
-            <input type="text" id="c-nome" placeholder="Nome Cantiere">
-            <button onclick="addCantiere()" class="btn-primary">CREA CARTELLA</button>
-            <div id="c-list" class="folder-area"></div>
+    <div id="mod-irina" class="modal-overlay">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeMod('irina')">CHIUDI</button>
+            <h2>IRINA HD</h2>
+        </div>
+        <div class="camera-viewport">
+            <video id="v" autoplay playsinline></video>
+            <div class="camera-aim"></div>
+        </div>
+        <div class="camera-controls">
+            <div class="zoom-box">
+                <label>Zoom</label>
+                <input type="range" min="1" max="5" step="0.1" value="1" oninput="applyZoom(this.value)">
+            </div>
+            <div id="analysis-display" class="analysis-box">
+                <div id="color-prev" class="color-circle"></div>
+                <div id="color-info">Inquadra una superficie...</div>
+            </div>
+            <button class="btn-scan" onclick="takeReading()">LEGGI COLORE RAL</button>
         </div>
     </div>
 
-    <div id="mod-magazzino" class="modal">
-        <div class="modal-h"><button onclick="closeMod('magazzino')">INDIETRO</button><h3>MAGAZZINO</h3></div>
-        <div class="tab-bar">
+    <div id="mod-magazzino" class="modal-overlay">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeMod('magazzino')">INDIETRO</button>
+            <h2>MAGAZZINO</h2>
+        </div>
+        <div class="tab-system">
             <button id="tab-mat" class="tab-btn active" onclick="switchTab('mat')">MATERIALI</button>
             <button id="tab-att" class="tab-btn" onclick="switchTab('att')">ATTREZZATURE</button>
         </div>
-        <div class="content-padding">
-            <input type="text" id="m-nome" placeholder="Articolo">
-            <input type="number" id="m-qta" placeholder="Q.tà">
-            <textarea id="m-note" placeholder="Note (scadenza, fornitore...)"></textarea>
-            <div class="btn-group">
-                <button onclick="stockUpdate('IN')" class="btn-primary">ENTRATA (+)</button>
-                <button onclick="stockUpdate('OUT')" class="btn-sec">USCITA (-)</button>
+        <div class="modal-content">
+            <div class="stock-form">
+                <input type="text" id="m-nome" placeholder="Nome Articolo">
+                <input type="number" id="m-qta" placeholder="Quantità">
+                <div class="stock-btns">
+                    <button class="btn-in" onclick="updateStock('IN')">ENTRATA (+)</button>
+                    <button class="btn-out" onclick="updateStock('OUT')">USCITA (-)</button>
+                </div>
             </div>
-            <div id="m-list" class="item-list"></div>
+            <div id="m-list" class="stock-list"></div>
         </div>
     </div>
 
