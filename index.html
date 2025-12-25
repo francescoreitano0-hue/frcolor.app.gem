@@ -9,17 +9,17 @@
 <body>
     <div id="login-screen" class="login-container">
         <div class="login-box">
-            <img src="logo.png" alt="FR Color" class="login-logo">
-            <input type="password" id="pass-input" placeholder="Password">
+            <h1 style="color:#1e3a5f;">FR COLOR PRO</h1>
+            <input type="password" id="pass-input" placeholder="Inserisci Password">
             <button class="btn-main" onclick="checkLogin()">ACCEDI</button>
-            <p id="login-err" class="err"></p>
+            <p id="login-err" style="color:red; font-size:12px;"></p>
         </div>
     </div>
 
-    <div id="main-app" style="display:none;">
+    <div id="main-app" class="app-container" style="display:none;">
         <header class="header">
             <div class="h-top">
-                <img src="logo.png" alt="Logo" style="height: 35px;">
+                <span style="font-weight:bold; color:#1e3a5f;">FR COLOR SYSTEM</span>
                 <button onclick="location.reload()" class="btn-esc">Esci</button>
             </div>
             <div class="rainbow-line"></div>
@@ -36,9 +36,16 @@
             <a href="mailto:info@frcolor.it">Mail</a>
             <a href="https://gemini.google.com/app" target="_blank">Gemini</a>
             <a href="https://chatgpt.com" target="_blank">ChatGPT</a>
-            <a href="#" class="btn-x">X</a>
+            <a href="#" class="btn-x" style="color:red">X</a>
         </footer>
     </div>
+
+    <div id="mod-cantieri" class="modal"><div class="modal-content">
+        <div class="modal-h"><h2>CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
+        <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
+        <button class="btn-main" onclick="addCantiere()">CREA CARTELLA</button>
+        <div id="c-list"></div>
+    </div></div>
 
     <div id="mod-irina" class="modal"><div class="modal-content">
         <div class="modal-h"><h2>IRINA HD</h2><button onclick="closeMod('irina')">✕</button></div>
@@ -47,16 +54,14 @@
             <canvas id="c-view" style="display:none;"></canvas>
             <div class="pointer-center"></div>
         </div>
-        
         <div class="zoom-ctrl">
-            <span>-</span>
-            <input type="range" id="zoom-range" min="1" max="3" step="0.1" value="1" oninput="applyZoom(this.value)">
-            <span>+</span>
+            <span>1x</span>
+            <input type="range" id="zoom-range" min="1" max="4" step="0.1" value="1" oninput="applyZoom(this.value)">
+            <span>4x</span>
         </div>
-
         <div class="results">
             <div id="color-preview" class="color-dot"></div>
-            <div id="out-text" class="color-text">Tocca lo schermo o usa il centro</div>
+            <div id="out-text" class="color-text">Usa il mirino o tocca la foto</div>
         </div>
         <div class="btn-grid">
             <button class="btn-main" onclick="takeReading()">LEGGI CENTRO</button>
@@ -67,20 +72,19 @@
         </div>
     </div></div>
 
-    <div id="mod-cantieri" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
-        <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
-        <button class="btn-main" onclick="addCantiere()">CREA CARTELLA</button>
-        <div id="c-list"></div>
-    </div></div>
-
     <div id="mod-magazzino" class="modal"><div class="modal-content">
         <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
-        <div class="tabs"><button id="t-mat" class="active" onclick="setTab('mat')">Materiali</button><button id="t-att" onclick="setTab('att')">Attrezzature</button></div>
+        <div class="tabs">
+            <button id="t-mat" class="active" onclick="setTab('mat')">Materiali</button>
+            <button id="t-att" onclick="setTab('att')">Attrezzature</button>
+        </div>
         <input type="text" id="m-nome" placeholder="Articolo...">
-        <input type="number" id="m-qta" placeholder="Q.tà">
-        <textarea id="m-note" placeholder="Note (marca, fornitore...)"></textarea>
-        <div class="btn-grid-row"><button class="btn-in" onclick="updStock('IN')">CARICO</button><button class="btn-out" onclick="updStock('OUT')">SCARICO</button></div>
+        <input type="number" id="m-qta" placeholder="Quantità">
+        <textarea id="m-note" placeholder="Note (marca, fornitore, ecc...)"></textarea>
+        <div class="btn-grid-row">
+            <button class="btn-in" onclick="updStock('IN')">CARICO</button>
+            <button class="btn-out" onclick="updStock('OUT')">SCARICO</button>
+        </div>
         <div id="m-list"></div>
     </div></div>
 
