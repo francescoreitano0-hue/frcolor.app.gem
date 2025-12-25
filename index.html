@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FR Color - Sistema Gestionale</title>
+    <title>FR Color - Official App</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -21,6 +21,7 @@
                     </div>
                 </div>
                 <div class="header-btns">
+                    <button class="btn-settings">⚙️</button>
                     <button class="btn-exit" onclick="location.reload()">Esci</button>
                 </div>
             </div>
@@ -39,7 +40,7 @@
             <div class="menu-item" onclick="openMod('irina')">
                 <div class="menu-info">
                     <strong>Spettrometro Irina</strong>
-                    <span>Lettura RAL HD e codici schermo.</span>
+                    <span>Lettura RAL HD e codici colore schermo.</span>
                 </div>
                 <div class="badge-active">ATTIVO</div>
             </div>
@@ -47,18 +48,18 @@
             <div class="menu-item" onclick="openMod('magazzino')">
                 <div class="menu-info">
                     <strong>Magazzino Inventario</strong>
-                    <span>Materiali e Attrezzature.</span>
+                    <span>Gestione materiali e attrezzature.</span>
                 </div>
                 <div class="badge-active">ATTIVO</div>
             </div>
         </main>
 
         <footer class="main-dock">
-            <div class="dock-label" onclick="window.open('https://wa.me/')">WhatsApp</div>
-            <div class="dock-label" onclick="window.open('mailto:test@test.it')">Gmail</div>
-            <div class="dock-icon" onclick="alert('Gemini Live')">♊</div>
-            <div class="dock-icon" onclick="alert('ChatGPT')">🤖</div>
-            <div class="dock-icon x-btn" onclick="alert('Tasto X: Sviluppo FR')">X</div>
+            <div class="dock-label" onclick="window.open('https://wa.me/yournumber')">WhatsApp</div>
+            <div class="dock-label" onclick="window.open('mailto:info@frcolor.it')">Gmail</div>
+            <div class="dock-icon">♊</div>
+            <div class="dock-icon">🤖</div>
+            <div class="dock-icon x-btn">X</div>
         </footer>
     </div>
 
@@ -69,7 +70,7 @@
                 <button class="close-x" onclick="closeMod('cantieri')">x</button>
             </div>
             <div class="modal-body">
-                <input type="text" id="c-nome" placeholder="Nome nuovo cantiere (es: Condominio Rossi)">
+                <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
                 <button class="btn-dark-blue" onclick="addCantiere()">CREA CARTELLA</button>
                 <div id="c-list" class="scroll-area"></div>
             </div>
@@ -79,18 +80,21 @@
     <div id="mod-irina" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
-                <h2>Spettrometro Irina HD</h2>
+                <h2>Irina Spettrometro HD</h2>
                 <button class="close-x" onclick="closeMod('irina')">x</button>
             </div>
-            <div class="camera-box">
+            <div class="camera-container">
                 <video id="v" autoplay playsinline></video>
-                <div class="aim"></div>
+                <div class="reticolo"></div>
             </div>
-            <div id="result-box" class="result-area">
-                <div id="color-circle" class="circle"></div>
-                <div id="color-codes">Inquadra e premi "Leggi"</div>
+            <div class="analysis-panel">
+                <div id="color-preview" class="color-sample"></div>
+                <div class="color-data">
+                    <p id="res-ral">RAL: --</p>
+                    <p id="res-codes">RGB: -- | HEX: --</p>
+                </div>
             </div>
-            <button class="btn-dark-blue" onclick="takeReading()">LEGGI COLORE RAL</button>
+            <button class="btn-dark-blue" onclick="takeReading()">LEGGI COLORE</button>
         </div>
     </div>
 
