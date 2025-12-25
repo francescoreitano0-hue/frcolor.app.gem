@@ -10,9 +10,9 @@
     <div id="login-screen" class="login-container">
         <div class="login-box">
             <h1 style="color:#1e3a5f;">FR COLOR PRO</h1>
-            <input type="password" id="pass-input" placeholder="Inserisci Password">
+            <input type="password" id="pass-input" placeholder="Password">
             <button class="btn-main" onclick="checkLogin()">ACCEDI</button>
-            <p id="login-err" style="color:red; font-size:12px;"></p>
+            <p id="login-err" style="color:red;"></p>
         </div>
     </div>
 
@@ -32,37 +32,32 @@
         </main>
 
         <footer class="dock">
-            <a href="https://wa.me/393290295847" target="_blank">WA</a>
-            <a href="mailto:info@frcolor.it">Mail</a>
-            <a href="https://gemini.google.com/app" target="_blank">Gemini</a>
+            <a href="https://wa.me/393290295847" target="_blank">WhatsApp</a>
+            <a href="mailto:info@frcolor.it">Gmail</a>
+            <a href="https://gemini.google.com" target="_blank">Gemini</a>
             <a href="https://chatgpt.com" target="_blank">ChatGPT</a>
-            <a href="#" class="btn-x" style="color:red">X</a>
+            <a href="#" class="btn-x">X</a>
         </footer>
     </div>
 
-    <div id="mod-cantieri" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
-        <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
-        <button class="btn-main" onclick="addCantiere()">CREA CARTELLA</button>
-        <div id="c-list"></div>
-    </div></div>
-
     <div id="mod-irina" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>IRINA HD</h2><button onclick="closeMod('irina')">✕</button></div>
+        <div class="modal-h"><h2>IRINA SPETTROMETRO HD</h2><button onclick="closeMod('irina')">✕</button></div>
         <div class="cam-box">
             <video id="v" autoplay playsinline></video>
             <canvas id="c-view" style="display:none;"></canvas>
-            <div class="pointer-center"></div>
-        </div>
+            <div class="pointer-center"></div> </div>
+        
         <div class="zoom-ctrl">
-            <span>1x</span>
-            <input type="range" id="zoom-range" min="1" max="4" step="0.1" value="1" oninput="applyZoom(this.value)">
-            <span>4x</span>
+            <span>ZOOM:</span>
+            <input type="range" id="zoom-range" min="1" max="5" step="0.1" value="1" oninput="applyZoom(this.value)">
         </div>
-        <div class="results">
+
+        <div class="results-hd">
             <div id="color-preview" class="color-dot"></div>
-            <div id="out-text" class="color-text">Usa il mirino o tocca la foto</div>
+            <div id="out-text" class="color-data-grid">
+                </div>
         </div>
+
         <div class="btn-grid">
             <button class="btn-main" onclick="takeReading()">LEGGI CENTRO</button>
             <div class="btn-grid-row">
@@ -72,18 +67,25 @@
         </div>
     </div></div>
 
+    <div id="mod-cantieri" class="modal"><div class="modal-content">
+        <div class="modal-h"><h2>GESTIONE CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
+        <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
+        <button class="btn-main" onclick="addCantiere()">CREA CARTELLA</button>
+        <div id="c-list"></div>
+    </div></div>
+
     <div id="mod-magazzino" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
+        <div class="modal-h"><h2>MAGAZZINO & NOTE</h2><button onclick="closeMod('magazzino')">✕</button></div>
         <div class="tabs">
             <button id="t-mat" class="active" onclick="setTab('mat')">Materiali</button>
             <button id="t-att" onclick="setTab('att')">Attrezzature</button>
         </div>
-        <input type="text" id="m-nome" placeholder="Articolo...">
+        <input type="text" id="m-nome" placeholder="Nome articolo...">
         <input type="number" id="m-qta" placeholder="Quantità">
-        <textarea id="m-note" placeholder="Note (marca, fornitore, ecc...)"></textarea>
+        <textarea id="m-note" placeholder="Note fornitore, marca, lotti..."></textarea>
         <div class="btn-grid-row">
-            <button class="btn-in" onclick="updStock('IN')">CARICO</button>
-            <button class="btn-out" onclick="updStock('OUT')">SCARICO</button>
+            <button class="btn-in" onclick="updStock('IN')">CARICA</button>
+            <button class="btn-out" onclick="updStock('OUT')">SCARICA</button>
         </div>
         <div id="m-list"></div>
     </div></div>
