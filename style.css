@@ -1,43 +1,174 @@
-body { background: #f2f2f7; font-family: -apple-system, sans-serif; margin: 0; user-select: none; }
-.screen { display: none; }
+/* --- VARIABILI E BASE --- */
+:root {
+    --bg-main: #f2f2f7;
+    --card-white: #ffffff;
+    --text-blue-dark: #1c1c1e;
+    --text-gray: #8e8e93;
+    --apple-green: #34c759;
+    --apple-red: #ff3b30;
+    --apple-blue: #007aff;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-blue-dark);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+.screen { display: none; min-height: 100vh; }
 .active { display: block; }
 
-/* Dashboard Card Style */
-header { background: #fff; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; }
-.logo-header { height: 40px; }
-.container { padding: 20px; }
-.card { 
-    background: #fff; border-radius: 20px; padding: 25px; margin-bottom: 20px;
-    display: flex; justify-content: space-between; align-items: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer;
+/* --- HEADER --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
+    border-bottom: 1px solid #d1d1d6;
 }
-.card-info strong { font-size: 19px; display: block; color: #1c1c1e; }
-.card-info p { font-size: 14px; color: #8e8e93; margin-top: 5px; }
-.status { font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 15px; }
-.status.active { color: #34c759; border: 1px solid #34c759; }
-.status.gray { color: #8e8e93; border: 1px solid #8e8e93; }
 
-/* Modali */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 999; flex-direction: column; }
-.modal-h { background: #1c1c1e; color: #fff; padding: 20px; display: flex; align-items: center; gap: 20px; }
-.viewport { position: relative; width: 100%; height: 50vh; background: #000; overflow: hidden; }
-#v, #img-v { width: 100%; height: 100%; object-fit: cover; }
-#mirino { position: absolute; top: 50%; left: 50%; width: 30px; height: 30px; border: 2px solid #fff; border-radius: 50%; transform: translate(-50%,-50%); }
+.logo-main { height: 40px; }
+.pill-btn {
+    background: white;
+    border: 1px solid #d1d1d6;
+    padding: 6px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-left: 8px;
+    cursor: pointer;
+}
 
-/* Pulsanti e Form */
-.btn-primary { background: #1c1c1e; color: #fff; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: bold; margin: 10px 0; }
-.btn-sec { background: #e5e5ea; color: #1c1c1e; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: bold; text-align: center; }
-.btn-group { display: flex; gap: 10px; }
-input, textarea { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
+/* --- DASHBOARD CARDS --- */
+.main-container { padding: 20px; padding-bottom: 120px; }
 
-/* Dock */
-.dock { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 25px 0; border-top: 1px solid #ddd; }
-.dock a, .dock button { font-size: 14px; font-weight: bold; text-decoration: none; color: #1c1c1e; background: none; border: none; }
-.x-btn { color: #ff3b30 !important; }
+.app-card {
+    background: var(--card-white);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
 
-/* Magazzino Tabs */
-.tab-bar { display: flex; background: #f2f2f7; }
-.tab-btn { flex: 1; padding: 15px; border: none; font-weight: bold; color: #8e8e93; }
-.tab-btn.active { background: #fff; color: #1c1c1e; border-bottom: 3px solid #1c1c1e; }
-.folder-area { margin-top: 20px; }
-.folder-card { background: #f9f9f9; padding: 20px; border-radius: 15px; margin-bottom: 10px; border-left: 5px solid #1c1c1e; }
+.app-card:active { transform: scale(0.98); }
+
+.card-text h3 { margin: 0; font-size: 19px; font-weight: 700; }
+.card-text p { margin: 4px 0 0; font-size: 14px; color: var(--text-gray); }
+
+.badge-status {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--apple-green);
+    border: 1.5px solid var(--apple-green);
+    padding: 5px 12px;
+    border-radius: 14px;
+    text-transform: uppercase;
+}
+
+.badge-prox { color: var(--text-gray); border-color: var(--text-gray); }
+
+/* --- DOCK INFERIORE --- */
+.main-dock {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 25px 0;
+    border-top: 1px solid #d1d1d6;
+    z-index: 99;
+}
+
+.dock-item { font-weight: 700; font-size: 14px; cursor: pointer; }
+.dock-icon { font-size: 22px; cursor: pointer; }
+.gemini-color { color: #4285f4; }
+.gpt-color { color: #10a37f; }
+.x-red { color: var(--apple-red); font-weight: 900; }
+
+/* --- MODALI --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border-bottom: 1px solid #eee;
+}
+
+.back-btn {
+    background: var(--text-blue-dark);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.modal-content { padding: 20px; overflow-y: auto; }
+
+/* --- ELEMENTI INTERNI (CANTIERI/MAG) --- */
+input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #d1d1d6;
+    font-size: 16px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+
+.btn-create-folder, .btn-scan {
+    background: var(--text-blue-dark);
+    color: white;
+    width: 100%;
+    padding: 18px;
+    border-radius: 16px;
+    font-weight: 800;
+    border: none;
+    font-size: 16px;
+}
+
+.folder-card {
+    background: #f2f2f7;
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.folder-actions { display: flex; gap: 10px; margin-top: 12px; }
+.btn-gray { background: #e5e5ea; border: none; flex: 1; padding: 12px; border-radius: 12px; font-weight: bold; }
+.btn-red { background: var(--apple-red); color: white; border: none; flex: 1; padding: 12px; border-radius: 12px; font-weight: bold; }
+
+/* --- CAMERA IRINA --- */
+.camera-viewport { position: relative; width: 100%; height: 40vh; background: #000; overflow: hidden; }
+#v { width: 100%; height: 100%; object-fit: cover; }
+.camera-aim {
+    position: absolute; top: 50%; left: 50%; width: 40px; height: 40px;
+    border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.analysis-box { display: flex; align-items: center; gap: 15px; padding: 20px; background: #f9f9f9; border-radius: 15px; margin-bottom: 20px; }
+.color-circle { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #ddd; }
