@@ -91,21 +91,30 @@ function analyzeImg(input) {
 }
 
 function takeReading() {
-    const v = document.getElementById('v'), cv = document.getElementById('c-view'), ctx = cv.getContext('2d', {willReadFrequently:true});
+    const cv = document.getElementById('c-view');
+    const v = document.getElementById('v');
+    const ctx = cv.getContext('2d', {willReadFrequently: true});
+
+    // Se stiamo usando la camera live
     if (v.style.display !== 'none') {
-        cv.width = v.videoWidth; cv.height = v.videoHeight;
+        cv.width = v.videoWidth; 
+        cv.height = v.videoHeight;
         ctx.drawImage(v, 0, 0);
     }
+    // Se stiamo usando una foto caricata, il canvas è già pieno.
+    // Leggiamo il pixel centrale del canvas (dove c'è il mirino)
     const p = ctx.getImageData(cv.width/2, cv.height/2, 1, 1).data;
     const r = p[0], g = p[1], b = p[2];
-    const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
-    const match = RAL_DB.map(c => ({...c, d: Math.sqrt((r-c.r)**2+(g-c.g)**2+(b-c.b)**2)})).sort((a,b)=>a.d-b.d)[0];
     
+    const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+    
+    // Mostra i risultati (Mantenendo la tua grafica dei dati)
     document.getElementById('color-preview').style.backgroundColor = hex;
     document.getElementById('out-text').innerHTML = `
-        <div class="data-box">RAL: ${match.ral}</div><div class="data-box">HEX: ${hex}</div>
-        <div class="data-box">RGB: ${r},${g},${b}</div><div class="data-box">SCR: ${(r/255).toFixed(2)},${(g/255).toFixed(2)}</div>
-        <div class="data-box" style="grid-column:1/3">${match.n}</div>`;
+        <div class="data-box">RGB: ${r},${g},${b}</div>
+        <div class="data-box">HEX: ${hex}</div>
+    `;
+    // La funzione non si chiude, permettendo di premere il tasto all'infinito
 }
 
 // --- GESTIONE CANTIERI ---
@@ -117,16 +126,23 @@ function addCantiere() {
 
 function renderCantieri() {
     document.getElementById('c-list').innerHTML = state.cantieri.map(c => `
-        <div class="c-card">
-            <div style="font-size:18px; margin-bottom:10px;"><b>📁 ${c.nome}</b></div>
-            <label style="font-size:11px; font-weight:bold; color:var(--navy);">MATERIALI E PRODOTTI:</label>
-            <textarea placeholder="Inserisci materiali..." onchange="updC(${c.id},'materiali',this.value)" style="height:60px; background:#fff;">${c.materiali || ''}</textarea>
-            <label style="font-size:11px; font-weight:bold; color:var(--navy);">NOTE GENERALI:</label>
-            <textarea placeholder="Note..." onchange="updC(${c.id},'note',this.value)" style="height:60px;">${c.note || ''}</textarea>
-            <div class="foto-grid">${c.foto.map(f => `<img src="${f}" class="thumb">`).join('')}</div>
-            <div class="btn-grid">
-                <button class="btn-in" onclick="addF(${c.id},true)">FOTO</button>
-                <button class="btn-out" onclick="addF(${c.id},false)">GALLERIA</button>
+        <div class="c-card" style="border: 2px solid #1e3a5f; padding:15px; border-radius:15px; margin-top:15px;">
+            <b>📁 ${c.nome}</b>
+            <textarea placeholder="Materiali..." onchange="updC(${c.id},'materiali',this.value)">${c.materiali || ''}</textarea>
+            
+            <div style="margin-top:15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="sub-folder" style="background:#f1f3f5; padding:10px; border-radius:10px; border: 1px solid #ddd;">
+                    <p style="font-weight:bold; font-size:12px;">📸 FOTO</p>
+                    <div class="foto-grid" style="display:flex; gap:5px; overflow-x:auto;">
+                        ${(c.foto || []).map(f => `<img src="${f}" style="width:50px; height:50px; border-radius:5px;">`).join('')}
+                    </div>
+                    <button class="btn-in" style="width:100%; padding:5px; font-size:10px;" onclick="addFile(${c.id},'foto')">AGGIUNGI</button>
+                </div>
+                <div class="sub-folder" style="background:#f1f3f5; padding:10px; border-radius:10px; border: 1px solid #ddd;">
+                    <p style="font-weight:bold; font-size:12px;">📄 DOCUMENTI</p>
+                    <div style="font-size:10px;">${(c.docs || []).length} file salvati</div>
+                    <button class="btn-out" style="width:100%; padding:5px; font-size:10px;" onclick="addFile(${c.id},'docs')">AGGIUNGI</button>
+                </div>
             </div>
         </div>`).reverse().join('');
 }
