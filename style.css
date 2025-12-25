@@ -1,49 +1,43 @@
-
-body { background: #f0f0f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; user-select: none; }
-.screen { display: none; padding: 0; }
+body { background: #f2f2f7; font-family: -apple-system, sans-serif; margin: 0; user-select: none; }
+.screen { display: none; }
 .active { display: block; }
 
-/* Login */
-.login-card { background: white; padding: 40px; margin: 25% 20px; border-radius: 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-.logo-main { width: 120px; margin-bottom: 20px; }
-
-/* Dashboard - Stile Originale Card */
-header { background: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
-.logo-nav { height: 40px; }
+/* Dashboard Card Style */
+header { background: #fff; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; }
+.logo-header { height: 40px; }
 .container { padding: 20px; }
 .card { 
-    background: white; border-radius: 18px; padding: 22px; margin-bottom: 18px;
+    background: #fff; border-radius: 20px; padding: 25px; margin-bottom: 20px;
     display: flex; justify-content: space-between; align-items: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06); cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer;
 }
-.card-text strong { font-size: 18px; display: block; color: #1a1a1a; }
-.card-text p { font-size: 13px; color: #777; margin-top: 5px; }
-.dot { width: 12px; height: 12px; border-radius: 50%; }
-.dot.active { background: #27ae60; box-shadow: 0 0 8px #27ae60; }
-.dot.gray { background: #bbb; }
+.card-info strong { font-size: 19px; display: block; color: #1c1c1e; }
+.card-info p { font-size: 14px; color: #8e8e93; margin-top: 5px; }
+.status { font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 15px; }
+.status.active { color: #34c759; border: 1px solid #34c759; }
+.status.gray { color: #8e8e93; border: 1px solid #8e8e93; }
 
 /* Modali */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; flex-direction: column; }
-.modal-h { background: #1a1a1a; color: white; padding: 18px; display: flex; align-items: center; gap: 15px; }
-.viewport { position: relative; width: 100%; height: 50vh; background: black; overflow: hidden; }
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 999; flex-direction: column; }
+.modal-h { background: #1c1c1e; color: #fff; padding: 20px; display: flex; align-items: center; gap: 20px; }
+.viewport { position: relative; width: 100%; height: 50vh; background: #000; overflow: hidden; }
 #v, #img-v { width: 100%; height: 100%; object-fit: cover; }
-#mirino { position: absolute; top: 50%; left: 50%; width: 25px; height: 25px; border: 2px solid white; border-radius: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+#mirino { position: absolute; top: 50%; left: 50%; width: 30px; height: 30px; border: 2px solid #fff; border-radius: 50%; transform: translate(-50%,-50%); }
 
-/* Form e Bottoni */
-input, textarea { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; font-size: 16px; box-sizing: border-box; }
-.btn-primary { background: #1a1a1a; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; }
-.btn-sec { background: #e0e0e0; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; text-align: center; }
-.btn-row { display: flex; gap: 12px; margin: 15px 0; }
+/* Pulsanti e Form */
+.btn-primary { background: #1c1c1e; color: #fff; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: bold; margin: 10px 0; }
+.btn-sec { background: #e5e5ea; color: #1c1c1e; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: bold; text-align: center; }
+.btn-group { display: flex; gap: 10px; }
+input, textarea { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
 
 /* Dock */
-.dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 20px 0; border-top: 1px solid #eee; }
-.dock a, .dock button { font-size: 13px; font-weight: bold; text-decoration: none; color: black; background: none; border: none; }
-.btn-x { color: #e74c3c !important; }
+.dock { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 25px 0; border-top: 1px solid #ddd; }
+.dock a, .dock button { font-size: 14px; font-weight: bold; text-decoration: none; color: #1c1c1e; background: none; border: none; }
+.x-btn { color: #ff3b30 !important; }
 
 /* Magazzino Tabs */
-.tabs { display: flex; background: #f0f0f5; }
-.tabs button { flex: 1; padding: 18px; border: none; background: none; font-weight: bold; }
-.tab-active { background: white !important; border-bottom: 4px solid #1a1a1a; }
-.p-20 { padding: 20px; }
-.scroll-area { height: 350px; overflow-y: auto; margin-top: 20px; }
-.folder { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 6px solid #1a1a1a; }
+.tab-bar { display: flex; background: #f2f2f7; }
+.tab-btn { flex: 1; padding: 15px; border: none; font-weight: bold; color: #8e8e93; }
+.tab-btn.active { background: #fff; color: #1c1c1e; border-bottom: 3px solid #1c1c1e; }
+.folder-area { margin-top: 20px; }
+.folder-card { background: #f9f9f9; padding: 20px; border-radius: 15px; margin-bottom: 10px; border-left: 5px solid #1c1c1e; }
