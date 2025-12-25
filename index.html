@@ -1,32 +1,32 @@
 <!DOCTYPE html>
-
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FR COLOR PRO OFFICIAL</title>
+    <title>FR COLOR PRO</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="login-screen" class="login-container">
         <div class="login-box">
-            <h1 style="color:#1e3a5f;">FR COLOR PRO</h1>
+            <img src="logo.png" style="width:150px; margin-bottom:20px;" onerror="this.style.display='none'">
             <input type="password" id="pass-input" placeholder="Password">
             <button class="btn-main" onclick="checkLogin()">ACCEDI</button>
             <p id="login-err" style="color:red;"></p>
         </div>
     </div>
 
-  <header class="header">
-    <div class="h-top">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <img src="logo.png" style="height:35px; width:auto;">
-            <span style="font-weight:bold; color:#1e3a5f; font-size:18px;">FR COLOR SYSTEM</span>
-        </div>
-        <button onclick="location.reload()" class="btn-esc">Esci</button>
-    </div>
-    <div class="rainbow-line"></div>
-</header>
+    <div id="main-app" class="app-container" style="display:none;">
+        <header class="header">
+            <div class="h-top">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <img src="logo.png" style="height:35px; width:auto;" onerror="this.style.display='none'">
+                    <span style="font-weight:bold; color:#1e3a5f; font-size:18px;">FR COLOR SYSTEM</span>
+                </div>
+                <button onclick="location.reload()" class="btn-esc">Esci</button>
+            </div>
+            <div class="rainbow-line"></div>
+        </header>
 
         <main class="dashboard">
             <div class="card" onclick="openMod('cantieri')">📁 GESTIONE CANTIERI</div>
@@ -39,60 +39,46 @@
             <a href="mailto:info@frcolor.it">Gmail</a>
             <a href="https://gemini.google.com" target="_blank">Gemini</a>
             <a href="https://chatgpt.com" target="_blank">ChatGPT</a>
-            <a href="#" class="btn-x">X</a>
+            <a href="#" class="btn-x" id="btn-x">X</a>
         </footer>
     </div>
 
     <div id="mod-irina" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>IRINA SPETTROMETRO HD</h2><button onclick="closeMod('irina')">✕</button></div>
-        <div class="cam-box">
+        <div class="modal-h"><h2>IRINA HD</h2><button onclick="closeMod('irina')">✕</button></div>
+        <div class="cam-box" id="cam-container">
             <video id="v" autoplay playsinline></video>
             <canvas id="c-view" style="display:none;"></canvas>
-            <div class="pointer-center"></div> </div>
-        
+            <div class="pointer-center"></div>
+        </div>
         <div class="zoom-ctrl">
-            <span>ZOOM:</span>
             <input type="range" id="zoom-range" min="1" max="5" step="0.1" value="1" oninput="applyZoom(this.value)">
         </div>
-
         <div class="results-hd">
             <div id="color-preview" class="color-dot"></div>
-            <div id="out-text" class="color-data-grid">
-                </div>
+            <div id="out-text" class="color-data-grid"></div>
         </div>
-
-        <div class="btn-grid">
-            <button class="btn-main" onclick="takeReading()">LEGGI CENTRO</button>
-            <div class="btn-grid-row">
-                <label class="btn-in">SCATTA <input type="file" hidden accept="image/*" capture="environment" onchange="analyzeImg(this)"></label>
-                <label class="btn-out">GALLERIA <input type="file" hidden accept="image/*" onchange="analyzeImg(this)"></label>
-            </div>
+        <button class="btn-main" onclick="takeReading()">LEGGI COLORE</button>
+        <div class="btn-grid-row">
+            <label class="btn-in">FOTO <input type="file" hidden accept="image/*" capture="environment" onchange="analyzeImg(this)"></label>
+            <label class="btn-out">GALLERIA <input type="file" hidden accept="image/*" onchange="analyzeImg(this)"></label>
         </div>
     </div></div>
 
     <div id="mod-cantieri" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>GESTIONE CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
-        <input type="text" id="c-nome" placeholder="Nome nuovo cantiere...">
-        <button class="btn-main" onclick="addCantiere()">CREA CARTELLA</button>
+        <div class="modal-h"><h2>CANTIERI</h2><button onclick="closeMod('cantieri')">✕</button></div>
+        <input type="text" id="c-nome" placeholder="Nome cantiere...">
+        <button class="btn-main" onclick="addCantiere()">CREA</button>
         <div id="c-list"></div>
     </div></div>
 
     <div id="mod-magazzino" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>MAGAZZINO & NOTE</h2><button onclick="closeMod('magazzino')">✕</button></div>
-        <div class="tabs">
-            <button id="t-mat" class="active" onclick="setTab('mat')">Materiali</button>
-            <button id="t-att" onclick="setTab('att')">Attrezzature</button>
-        </div>
-        <input type="text" id="m-nome" placeholder="Nome articolo...">
-        <input type="number" id="m-qta" placeholder="Quantità">
-        <textarea id="m-note" placeholder="Note fornitore, marca, lotti..."></textarea>
-        <div class="btn-grid-row">
-            <button class="btn-in" onclick="updStock('IN')">CARICA</button>
-            <button class="btn-out" onclick="updStock('OUT')">SCARICA</button>
-        </div>
+        <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
+        <div class="tabs"><button id="t-mat" class="active" onclick="setTab('mat')">Materiali</button><button id="t-att" onclick="setTab('att')">Attrezzature</button></div>
+        <input type="text" id="m-nome" placeholder="Articolo..."><input type="number" id="m-qta" placeholder="Q.tà">
+        <textarea id="m-note" placeholder="Note..."></textarea>
+        <div class="btn-grid-row"><button class="btn-in" onclick="updStock('IN')">CARICO</button><button class="btn-out" onclick="updStock('OUT')">SCARICO</button></div>
         <div id="m-list"></div>
     </div></div>
-
     <script src="app.js"></script>
 </body>
 </html>
