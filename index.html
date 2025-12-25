@@ -73,16 +73,28 @@
     </div></div>
 
     <div id="mod-magazzino" class="modal"><div class="modal-content">
-        <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
-        <input type="text" id="m-nome" placeholder="Articolo...">
-        <input type="number" id="m-qta" placeholder="Quantità">
-        <textarea id="m-note" placeholder="Note materiale..."></textarea>
-        <div class="btn-grid">
-            <button class="btn-in" onclick="updStock('IN')">CARICO</button>
-            <button class="btn-out" onclick="updStock('OUT')">SCARICO</button>
-        </div>
-        <div id="m-list" style="margin-top:15px;"></div>
-    </div></div>
+    <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
+    
+    <h3 style="margin-bottom:10px;">PRODOTTI</h3>
+    <input type="text" id="m-nome" placeholder="Articolo...">
+    <input type="number" id="m-qta" placeholder="Quantità">
+    <textarea id="m-note" placeholder="Note materiale..."></textarea>
+    <div class="btn-grid">
+        <button class="btn-in" onclick="updStock('IN', 'mag')">CARICO</button>
+        <button class="btn-out" onclick="updStock('OUT', 'mag')">SCARICO</button>
+    </div>
+    <div id="m-list" style="margin-top:10px; border-bottom: 2px solid #eee; padding-bottom:15px;"></div>
+
+    <h3 style="margin-top:20px; margin-bottom:10px;">ATTREZZATURE</h3>
+    <input type="text" id="a-nome" placeholder="Articolo Attrezzo...">
+    <input type="number" id="a-qta" placeholder="Quantità">
+    <textarea id="a-note" placeholder="Note attrezzo..."></textarea>
+    <div class="btn-grid">
+        <button class="btn-in" style="background:#64748b;" onclick="updStock('IN', 'att')">CARICO</button>
+        <button class="btn-out" style="background:#64748b;" onclick="updStock('OUT', 'att')">SCARICO</button>
+    </div>
+    <div id="a-list" style="margin-top:10px;"></div>
+</div></div>
 
     <script src="app.js"></script>
 </body>
