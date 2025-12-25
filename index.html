@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FR COLOR SYSTEM v2.0</title>
+    <title>FR COLOR PRO OFFICIAL</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -12,8 +12,8 @@
 
     <div id="login-screen" class="login-container">
         <div class="login-box">
-            <div class="logo-circle">FR</div>
-            <h1>FR COLOR</h1>
+            <img src="logo.png" alt="FR Color" class="login-logo">
+            <h2>FR COLOR SYSTEM</h2>
             <input type="password" id="pass-input" placeholder="Password di Sistema">
             <button class="btn-main" onclick="checkLogin()">ACCEDI</button>
             <p id="login-err" class="err"></p>
@@ -23,13 +23,16 @@
     <div id="main-app" class="app-container" style="display:none;">
         <header class="header">
             <div class="h-top">
-                <strong>FR COLOR PRO</strong>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="logo.png" alt="Logo" style="height: 35px;">
+                    <strong>FR COLOR PRO</strong>
+                </div>
                 <button onclick="location.reload()">Esci</button>
             </div>
             <div class="rainbow-line"></div>
         </header>
 
-        <nav class="dashboard">
+        <main class="dashboard">
             <div class="card" onclick="openMod('cantieri')">
                 <h3>📁 Gestione Cantieri</h3>
                 <p>Note, Materiali, Foto e Report PDF</p>
@@ -42,7 +45,7 @@
                 <h3>📦 Magazzino</h3>
                 <p>Inventario Materiali e Attrezzature</p>
             </div>
-        </nav>
+        </main>
 
         <footer class="dock">
             <div onclick="window.open('https://wa.me/393290295847')">WA</div>
@@ -73,7 +76,7 @@
                 <span>Zoom</span>
                 <input type="range" min="1" max="5" step="0.1" value="1" oninput="applyZoom(this.value)">
             </div>
-            <div class="results" id="res-area">
+            <div class="results">
                 <div id="color-preview" class="color-dot"></div>
                 <div class="color-text">
                     <b id="out-ral">RAL: --</b><br>
@@ -98,7 +101,7 @@
             </div>
             <input type="text" id="m-nome" placeholder="Articolo...">
             <input type="number" id="m-qta" placeholder="Quantità">
-            <div class="btn-grid">
+            <div class="btn-grid-row">
                 <button class="btn-in" onclick="updStock('IN')">CARICO +</button>
                 <button class="btn-out" onclick="updStock('OUT')">SCARICO -</button>
             </div>
