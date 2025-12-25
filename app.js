@@ -137,3 +137,53 @@ function closeMod(id) { document.getElementById('mod-'+id).style.display = 'none
 function setTab(t) { currentTab = t; document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active')); document.getElementById('t-'+t).classList.add('active'); renderMag(); }
 function updC(id, f, v) { let c = state.cantieri.find(x => x.id === id); if(c) c[f] = v; save(); }
 function delC(id) { if(confirm("Eliminare?")) { state.cantieri = state.cantieri.filter(x => x.id !== id); save(); renderCantieri(); } }
+let isDragging = false, startX, startY, translateX = 0, translateY = 0;
+
+// Configura il trascinamento sulla foto caricata
+const canvas = document.getElementById('c-view');
+canvas.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX - translateX;
+    startY = e.touches[0].clientY - translateY;
+}, {passive: false});
+
+canvas.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    translateX = e.touches[0].clientX - startX;
+    translateY = e.touches[0].clientY - startY;
+    // Applica lo spostamento e mantiene lo zoom scelto dallo slider
+    const zoom = document.getElementById('zoom-range').value;
+    canvas.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoom})`;
+}, {passive: false});
+
+canvas.addEventListener('touchend', () => isDragging = false);
+
+// Modifica la funzione di lettura per leggere il punto SOTTO IL MIRINO
+function takeReading() {
+    const v = document.getElementById('v');
+    const cv = document.getElementById('c-view');
+    const ctx = cv.getContext('2d');
+    
+    if (v.style.display !== 'none') {
+        // Lettura diretta da fotocamera
+        cv.width = v.videoWidth; cv.height = v.videoHeight;
+        ctx.drawImage(v, 0, 0);
+        const p = ctx.getImageData(cv.width/2, cv.height/2, 1, 1).data;
+        showCol(p[0], p[1], p[2]);
+    } else {
+        // Lettura da FOTO CARICATA e SPOSTATA
+        const container = document.getElementById('cam-container');
+        const rect = container.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const photoRect = cv.getBoundingClientRect();
+        // Calcola il pixel esatto in base a dove hai spostato la foto
+        const x = (centerX - photoRect.left) * (cv.width / photoRect.width);
+        const y = (centerY - photoRect.top) * (cv.height / photoRect.height);
+        
+        const p = ctx.getImageData(x, y, 1, 1).data;
+        showCol(p[0], p[1], p[2]);
+    }
+}
