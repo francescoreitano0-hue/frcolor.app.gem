@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -22,7 +23,7 @@
                     <img src="logo.png" style="height:45px; width:auto;">
                     <span style="font-weight:bold; color:#1e3a5f; font-size:20px;">FR COLOR SYSTEM</span>
                 </div>
-                <button onclick="location.reload()" class="btn-esc">Esci</button>
+                <button onclick="location.reload()" class="btn-esc" style="background:#eee; border:none; padding:5px 10px; border-radius:5px;">Esci</button>
             </div>
             <div class="rainbow-line"></div>
         </header>
@@ -30,7 +31,7 @@
         <main class="dashboard">
             <div class="card" onclick="openMod('cantieri')">📁 GESTIONE CANTIERI</div>
             <div class="card" onclick="openMod('irina')">👁️ IRINA SPETTROMETRO HD</div>
-            <div class="card" onclick="openMod('magazzino')">📦 MAGAZZINO & NOTE</div>
+            <div class="card" onclick="openMod('magazzino')">📦 MAGAZZINO</div>
         </main>
 
         <footer class="dock">
@@ -57,7 +58,6 @@
             <div class="pointer-center"></div>
         </div>
         <div style="padding:15px 0;">
-            <label style="font-size:12px; font-weight:bold;">ZOOM MANUALE</label>
             <input type="range" id="zoom-range" min="1" max="4" step="0.1" value="1" oninput="handleZoom(this.value)">
         </div>
         <div class="results-hd">
@@ -73,13 +73,16 @@
 
     <div id="mod-magazzino" class="modal"><div class="modal-content">
         <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
+        <h4 style="margin-bottom:10px;">PRODOTTI</h4>
         <input type="text" id="m-nome" placeholder="Articolo...">
-        <input type="number" id="m-qta" placeholder="Quantità">
-        <textarea id="m-note" placeholder="Note materiale..."></textarea>
+        <input type="number" id="m-qta" placeholder="Q.tà">
         <div class="btn-grid">
             <button class="btn-in" onclick="updStock('IN')">CARICO</button>
             <button class="btn-out" onclick="updStock('OUT')">SCARICO</button>
         </div>
+        <h4 style="margin:20px 0 10px;">ATTREZZATURE</h4>
+        <input type="text" id="a-nome" placeholder="Nome attrezzo...">
+        <button class="btn-main" style="background:var(--gray);" onclick="addAttrezzo()">AGGIUNGI ATTREZZO</button>
         <div id="m-list" style="margin-top:15px;"></div>
     </div></div>
 
