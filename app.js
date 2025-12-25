@@ -95,24 +95,27 @@ function takeReading() {
     const v = document.getElementById('v');
     const ctx = cv.getContext('2d', {willReadFrequently: true});
 
-    // Se stiamo usando la camera live
+    // Se il video è attivo, cattura il frame nel canvas
     if (v.style.display !== 'none') {
         cv.width = v.videoWidth; 
         cv.height = v.videoHeight;
         ctx.drawImage(v, 0, 0);
     }
-    // Se stiamo usando una foto caricata, il canvas è già pieno.
-    // Leggiamo il pixel centrale del canvas (dove c'è il mirino)
-    const p = ctx.getImageData(cv.width/2, cv.height/2, 1, 1).data;
-    const r = p[0], g = p[1], b = p[2];
+
+    // Legge il colore al centro esatto del canvas (dove punti con la foto spostata)
+    const centerX = cv.width / 2;
+    const centerY = cv.height / 2;
+    const p = ctx.getImageData(centerX, centerY, 1, 1).data;
     
+    const r = p[0], g = p[1], b = p[2];
     const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
     
-    // Mostra i risultati (Mantenendo la tua grafica dei dati)
     document.getElementById('color-preview').style.backgroundColor = hex;
     document.getElementById('out-text').innerHTML = `
-        <div class="data-box">RGB: ${r},${g},${b}</div>
-        <div class="data-box">HEX: ${hex}</div>
+        <div style="font-weight:bold; color:#1e3a5f;">RGB: ${r},${g},${b}</div>
+        <div style="font-weight:bold; color:#1e3a5f;">HEX: ${hex}</div>
+    `;
+}
     `;
     // La funzione non si chiude, permettendo di premere il tasto all'infinito
 }
@@ -123,28 +126,32 @@ function addCantiere() {
     state.cantieri.push({ id: Date.now(), nome: n, materiali: "", note: "", foto: [] });
     save(); renderCantieri(); document.getElementById('c-nome').value = "";
 }
-
 function renderCantieri() {
     document.getElementById('c-list').innerHTML = state.cantieri.map(c => `
         <div class="c-card" style="border: 2px solid #1e3a5f; padding:15px; border-radius:15px; margin-top:15px;">
-            <b>📁 ${c.nome}</b>
-            <textarea placeholder="Materiali..." onchange="updC(${c.id},'materiali',this.value)">${c.materiali || ''}</textarea>
+            <b style="font-size:18px;">📁 ${c.nome}</b>
+            <textarea placeholder="Materiali..." onchange="updC(${c.id},'materiali',this.value)" style="width:100%; margin:10px 0;">${c.materiali || ''}</textarea>
             
-            <div style="margin-top:15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div class="sub-folder" style="background:#f1f3f5; padding:10px; border-radius:10px; border: 1px solid #ddd;">
-                    <p style="font-weight:bold; font-size:12px;">📸 FOTO</p>
-                    <div class="foto-grid" style="display:flex; gap:5px; overflow-x:auto;">
-                        ${(c.foto || []).map(f => `<img src="${f}" style="width:50px; height:50px; border-radius:5px;">`).join('')}
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div style="background:#f8f9fa; padding:10px; border-radius:10px; border:1px solid #ccc;">
+                    <p style="font-weight:bold; font-size:12px; margin-bottom:5px;">📸 FOTO</p>
+                    <div class="foto-grid" style="display:flex; gap:5px; overflow-x:auto; margin-bottom:10px;">
+                        ${(c.foto || []).map(f => `<img src="${f}" style="width:50px; height:50px; object-fit:cover; border-radius:5px;">`).join('')}
                     </div>
-                    <button class="btn-in" style="width:100%; padding:5px; font-size:10px;" onclick="addFile(${c.id},'foto')">AGGIUNGI</button>
+                    <button class="btn-in" style="width:100%; font-size:10px; margin-bottom:4px;" onclick="addFile(${c.id},'foto',true)">SCATTA FOTO</button>
+                    <button class="btn-in" style="width:100%; font-size:10px; background:#6c757d;" onclick="addFile(${c.id},'foto',false)">CARICA FOTO</button>
                 </div>
-                <div class="sub-folder" style="background:#f1f3f5; padding:10px; border-radius:10px; border: 1px solid #ddd;">
-                    <p style="font-weight:bold; font-size:12px;">📄 DOCUMENTI</p>
-                    <div style="font-size:10px;">${(c.docs || []).length} file salvati</div>
-                    <button class="btn-out" style="width:100%; padding:5px; font-size:10px;" onclick="addFile(${c.id},'docs')">AGGIUNGI</button>
+
+                <div style="background:#f8f9fa; padding:10px; border-radius:10px; border:1px solid #ccc;">
+                    <p style="font-weight:bold; font-size:12px; margin-bottom:5px;">📄 DOCUMENTI</p>
+                    <div style="font-size:11px; margin-bottom:10px;">File salvati: ${(c.docs || []).length}</div>
+                    <button class="btn-out" style="width:100%; font-size:10px; margin-bottom:4px;" onclick="addFile(${c.id},'docs',true)">SCATTA DOC</button>
+                    <button class="btn-out" style="width:100%; font-size:10px; background:#6c757d;" onclick="addFile(${c.id},'docs',false)">CARICA DOC</button>
                 </div>
             </div>
         </div>`).reverse().join('');
+}
+
 }
 
 function updC(id, f, v) { state.cantieri.find(x => x.id === id)[f] = v; save(); }
@@ -160,12 +167,21 @@ function addF(id, cam) {
 }
 
 // --- MAGAZZINO ---
-function updStock(mode) {
-    const n = document.getElementById('m-nome').value, q = parseInt(document.getElementById('m-qta').value), nt = document.getElementById('m-note').value;
+function updStock(mode, type) {
+    const n = document.getElementById(type === 'mag' ? 'm-nome' : 'a-nome').value;
+    const q = parseInt(document.getElementById(type === 'mag' ? 'm-qta' : 'a-qta').value);
+    const note = document.getElementById(type === 'mag' ? 'm-note' : 'a-note').value || "";
     if(!n || isNaN(q)) return;
-    let item = state.mag.find(x => x.nome === n);
-    if(item) { item.qta = (mode==='IN'?item.qta+q:Math.max(0,item.qta-q)); item.note = nt; }
-    else if(mode==='IN') state.mag.push({ nome: n, qta: q, note: nt });
+    
+    let targetList = type === 'mag' ? state.mag : state.att;
+    let item = targetList.find(x => x.nome === n);
+    
+    if(item) {
+        item.qta = (mode === 'IN' ? item.qta + q : Math.max(0, item.qta - q));
+        item.note = note;
+    } else if(mode === 'IN') {
+        targetList.push({ nome: n, qta: q, note: note });
+    }
     save(); renderMag();
 }
 
