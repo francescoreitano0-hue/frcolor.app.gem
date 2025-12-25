@@ -1,3 +1,4 @@
+// DATABASE RAL INTEGRALE DEFINITIVO
 const RAL_DB = [
     {ral:"1000",r:190,g:173,b:128,n:"Beige verdastro"},{ral:"1001",r:194,g:163,b:115,n:"Beige"},{ral:"1002",r:209,g:163,b:45,n:"Giallo sabbia"},
     {ral:"1003",r:243,g:165,b:5,n:"Giallo segnale"},{ral:"1004",r:228,g:160,b:4,n:"Giallo oro"},{ral:"1005",r:203,g:142,b:4,n:"Giallo miele"},
@@ -63,19 +64,22 @@ const RAL_DB = [
     {ral:"9010",r:241,g:240,b:234,n:"Bianco puro"},{ral:"9011",r:31,g:33,b:34,n:"Nero grafite"},{ral:"9016",r:241,g:246,b:246,n:"Bianco traffico"},
     {ral:"9017",r:29,g:31,b:32,n:"Nero traffico"},{ral:"9018",r:202,g:208,b:206,n:"Bianco papiro"}
 ];
-];
 
 let state = JSON.parse(localStorage.getItem('FR_PRO_OFFICIAL')) || { cantieri: [], mag: { mat: [], att: [] } };
 let stream = null, track = null, currentTab = 'mat';
 
+// FUNZIONE LOGIN CORRETTA
 function checkLogin() {
     const val = document.getElementById('pass-input').value.trim();
     if(val === "FR2025") {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
-    } else { document.getElementById('login-err').innerText = "Password Errata"; }
+    } else { 
+        document.getElementById('login-err').innerText = "Password Errata"; 
+    }
 }
 
+// RESTO DEL CODICE FUNZIONANTE
 function addCantiere() {
     const n = document.getElementById('c-nome').value;
     if(!n) return;
