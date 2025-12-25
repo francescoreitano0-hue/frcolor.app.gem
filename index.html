@@ -20,21 +20,21 @@
         <header class="header">
             <div class="h-top">
                 <img src="logo.png" alt="Logo" style="height: 35px;">
-                <button onclick="location.reload()" style="background:none; border:1px solid #ddd; border-radius:8px; padding:5px 10px;">Esci</button>
+                <button onclick="location.reload()" class="btn-esc">Esci</button>
             </div>
             <div class="rainbow-line"></div>
         </header>
 
         <main class="dashboard">
-            <div class="card" onclick="openMod('cantieri')"><h3>📁 GESTIONE CANTIERI</h3></div>
-            <div class="card" onclick="openMod('irina')"><h3>👁️ IRINA SPETTROMETRO HD</h3></div>
-            <div class="card" onclick="openMod('magazzino')"><h3>📦 MAGAZZINO & NOTE</h3></div>
+            <div class="card" onclick="openMod('cantieri')">📁 GESTIONE CANTIERI</div>
+            <div class="card" onclick="openMod('irina')">👁️ IRINA SPETTROMETRO HD</div>
+            <div class="card" onclick="openMod('magazzino')">📦 MAGAZZINO & NOTE</div>
         </main>
 
         <footer class="dock">
             <a href="https://wa.me/393290295847" target="_blank">WA</a>
             <a href="mailto:info@frcolor.it">Mail</a>
-            <a href="https://gemini.google.com" target="_blank">Gemini</a>
+            <a href="https://gemini.google.com/app" target="_blank">Gemini</a>
             <a href="https://chatgpt.com" target="_blank">ChatGPT</a>
             <a href="#" class="btn-x">X</a>
         </footer>
@@ -51,17 +51,19 @@
         <div class="modal-h"><h2>IRINA HD</h2><button onclick="closeMod('irina')">✕</button></div>
         <div class="cam-box">
             <video id="v" autoplay playsinline></video>
-            <canvas id="c-view" style="display:none; width:100%; height:100%; object-fit:cover;"></canvas>
+            <canvas id="c-view" style="display:none;"></canvas>
             <div class="crosshair"></div>
         </div>
         <div class="results">
             <div id="color-preview" class="color-dot"></div>
-            <div id="out-text" class="color-text">Inquadra o carica una foto...</div>
+            <div id="out-text" class="color-text">Tocca la foto per leggere il colore</div>
         </div>
         <div class="btn-grid">
-            <button class="btn-main" onclick="takeReading()">LEGGI COLORE</button>
-            <label class="btn-sec">SCATTA FOTO <input type="file" hidden accept="image/*" capture="environment" onchange="analyzeImg(this)"></label>
-            <label class="btn-sec">GALLERIA <input type="file" hidden accept="image/*" onchange="analyzeImg(this)"></label>
+            <button class="btn-main" onclick="takeReading()">LEGGI CENTRO</button>
+            <div class="btn-grid-row">
+                <label class="btn-in">SCATTA <input type="file" hidden accept="image/*" capture="environment" onchange="analyzeImg(this)"></label>
+                <label class="btn-out">GALLERIA <input type="file" hidden accept="image/*" onchange="analyzeImg(this)"></label>
+            </div>
         </div>
     </div></div>
 
@@ -70,7 +72,7 @@
         <div class="tabs"><button id="t-mat" class="active" onclick="setTab('mat')">Materiali</button><button id="t-att" onclick="setTab('att')">Attrezzature</button></div>
         <input type="text" id="m-nome" placeholder="Articolo...">
         <input type="number" id="m-qta" placeholder="Q.tà">
-        <textarea id="m-note" placeholder="Note (marca, fornitore, ecc...)"></textarea>
+        <textarea id="m-note" placeholder="Note (marca, fornitore...)"></textarea>
         <div class="btn-grid-row"><button class="btn-in" onclick="updStock('IN')">CARICO</button><button class="btn-out" onclick="updStock('OUT')">SCARICO</button></div>
         <div id="m-list"></div>
     </div></div>
