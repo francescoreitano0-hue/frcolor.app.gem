@@ -16,14 +16,14 @@
         </div>
     </div>
 
-    <div id="main-app" class="app-container" style="display:none;">
+    <div id="main-app" style="display:none;">
         <header class="header">
             <div class="h-top">
                 <div style="display:flex; align-items:center; gap:12px;">
                     <img src="logo.png" style="height:45px; width:auto;">
                     <span style="font-weight:bold; color:#1e3a5f; font-size:20px;">FR COLOR SYSTEM</span>
                 </div>
-                <button onclick="location.reload()" class="btn-esc">Esci</button>
+                <button onclick="location.reload()" style="background:#eee; border:none; padding:5px 10px; border-radius:5px;">Esci</button>
             </div>
             <div class="rainbow-line"></div>
         </header>
@@ -31,7 +31,7 @@
         <main class="dashboard">
             <div class="card" onclick="openMod('cantieri')">📁 GESTIONE CANTIERI</div>
             <div class="card" onclick="openMod('irina')">👁️ IRINA SPETTROMETRO HD</div>
-            <div class="card" onclick="openMod('magazzino')">📦 MAGAZZINO & NOTE</div>
+            <div class="card" onclick="openMod('magazzino')">📦 MAGAZZINO</div>
         </main>
 
         <footer class="dock">
@@ -57,10 +57,7 @@
             <canvas id="c-view" style="display:none;"></canvas>
             <div class="pointer-center"></div>
         </div>
-        <div style="padding:15px 0;">
-            <label style="font-size:12px; font-weight:bold;">ZOOM MANUALE</label>
-            <input type="range" id="zoom-range" min="1" max="4" step="0.1" value="1" oninput="handleZoom(this.value)">
-        </div>
+        <div style="padding:15px 0;"><input type="range" id="zoom-range" min="1" max="4" step="0.1" value="1" oninput="handleZoom(this.value)"></div>
         <div class="results-hd">
             <div id="color-preview" class="color-dot"></div>
             <div id="out-text" class="color-data-grid"></div>
@@ -72,29 +69,27 @@
         </div>
     </div></div>
 
-<div id="mod-magazzino" class="modal"><div class="modal-content">
-    <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
-    
-    <h3 style="margin-bottom:10px;">PRODOTTI</h3>
-    <input type="text" id="m-nome" placeholder="Articolo...">
-    <input type="number" id="m-qta" placeholder="Quantità">
-    <div class="btn-grid">
-        <button class="btn-in" onclick="updStock('IN', 'mag')">CARICO</button>
-        <button class="btn-out" onclick="updStock('OUT', 'mag')">SCARICO</button>
-    </div>
-    <div id="m-list" style="margin-top:10px; border-bottom: 2px solid #eee; padding-bottom:15px;"></div>
-
-    <h3 style="margin-top:20px; margin-bottom:10px;">ATTREZZATURE</h3>
-    <input type="text" id="a-nome" placeholder="Articolo Attrezzo...">
-    <input type="number" id="a-qta" placeholder="Quantità">
-    <textarea id="a-note" placeholder="Note attrezzo..."></textarea>
-    <div class="btn-grid">
-        <button class="btn-in" style="background:#64748b;" onclick="updStock('IN', 'att')">CARICO</button>
-        <button class="btn-out" style="background:#64748b;" onclick="updStock('OUT', 'att')">SCARICO</button>
-    </div>
-    <div id="a-list" style="margin-top:10px;"></div>
-</div></div>
-
+    <div id="mod-magazzino" class="modal"><div class="modal-content">
+        <div class="modal-h"><h2>MAGAZZINO</h2><button onclick="closeMod('magazzino')">✕</button></div>
+        <h3 style="margin-bottom:10px;">PRODOTTI</h3>
+        <input type="text" id="m-nome" placeholder="Articolo...">
+        <input type="number" id="m-qta" placeholder="Quantità">
+        <textarea id="m-note" placeholder="Note materiale..."></textarea>
+        <div class="btn-grid">
+            <button class="btn-in" onclick="updStock('IN', 'mag')">CARICO</button>
+            <button class="btn-out" onclick="updStock('OUT', 'mag')">SCARICO</button>
+        </div>
+        <div id="m-list" style="margin-top:10px; border-bottom: 2px solid #eee; padding-bottom:15px;"></div>
+        <h3 style="margin-top:20px; margin-bottom:10px;">ATTREZZATURE</h3>
+        <input type="text" id="a-nome" placeholder="Articolo Attrezzo...">
+        <input type="number" id="a-qta" placeholder="Quantità">
+        <textarea id="a-note" placeholder="Note attrezzo..."></textarea>
+        <div class="btn-grid">
+            <button class="btn-in" style="background:#64748b;" onclick="updStock('IN', 'att')">CARICO</button>
+            <button class="btn-out" style="background:#64748b;" onclick="updStock('OUT', 'att')">SCARICO</button>
+        </div>
+        <div id="a-list" style="margin-top:10px;"></div>
+    </div></div>
     <script src="app.js"></script>
 </body>
 </html>
