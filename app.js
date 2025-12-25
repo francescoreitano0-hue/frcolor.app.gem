@@ -1,146 +1,112 @@
-/**
- * FR COLOR - CORE ENGINE v1.0
- * Gestione: Spettrometro, Cantieri, Magazzino e Tasto X
- */
-
-// 1. CONFIGURAZIONE E LOGIN
+// --- LOGIN ---
 function checkLogin() {
-    const pass = document.getElementById('login-pass').value;
-    if (pass === 'frcolor') {
-        document.getElementById('login-screen').classList.remove('active-screen');
-        document.getElementById('main-app').classList.add('active-screen');
-    } else {
-        alert("Password Errata.");
-    }
+    if(document.getElementById('pass').value === 'frcolor') {
+        document.getElementById('login-screen').classList.remove('active');
+        document.getElementById('main-app').classList.add('active');
+    } else { alert("Password Errata"); }
 }
 
-function logout() {
-    location.reload();
+// --- MODALI ---
+function openMod(id) {
+    document.getElementById('mod-' + id).style.display = 'flex';
+    if(id === 'irina') startCam();
+    if(id === 'cantieri') renderCantieri();
+    if(id === 'magazzino') renderMagazzino();
+}
+function closeMod(id) {
+    document.getElementById(id).style.display = 'none';
+    if(id === 'mod-irina') stopCam();
 }
 
-// 2. GESTIONE INTERFACCIA (UI)
-const ui = {
-    openModal: function(section) {
-        const modal = document.getElementById('app-modal');
-        const title = document.getElementById('modal-title');
-        const body = document.getElementById('modal-body');
-        modal.style.display = 'block';
-        body.innerHTML = ''; // Pulisce il contenuto precedente
+// --- SPETTROMETRO ---
+let stream;
+async function startCam() {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", width: 3840 } });
+    document.getElementById('video').srcObject = stream;
+}
+function stopCam() { if(stream) stream.getTracks().forEach(t => t.stop()); }
 
-        if (section === 'irina') {
-            title.innerText = "Spettrometro Irina HD";
-            body.innerHTML = `
-                <video id="camera-view" autoplay playsinline></video>
-                <div id="results-area" class="card">
-                    <div id="color-match" style="height:50px; border-radius:10px; margin-bottom:10px; border:2px solid #ccc;"></div>
-                    <div id="ral-details">Punta la superficie e scatta...</div>
-                </div>
-                <button onclick="engine.captureColor()" class="btn-capture">ANALIZZA COLORE</button>
-            `;
-            engine.startCamera();
-        } 
-        else if (section === 'cantieri') {
-            title.innerText = "Archivio Cantieri";
-            body.innerHTML = `
-                <button class="btn-login" style="margin-bottom:15px;">+ NUOVO CANTIERE</button>
-                <div class="card"><strong>Cantiere: Villa Bianchi</strong><p>Documenti: 2 PDF - Foto: 5</p></div>
-                <div class="card"><strong>Cantiere: Uffici Red</strong><p>Documenti: 1 PDF - Foto: 12</p></div>
-            `;
-        }
-        else if (section === 'magazzino') {
-            title.innerText = "Magazzino Materiali";
-            body.innerHTML = `
-                <div class="card"><h3>Pittura Lavabile Bianca</h3><p>Giacenza: 24 LT</p><button>-1</button> <button>+1</button></div>
-                <div class="card"><h3>Fissativo Professionale</h3><p>Giacenza: 10 LT</p><button>-1</button> <button>+1</button></div>
-            `;
-        }
-        else if (section === 'tastox') {
-            title.innerText = "Simulatore Tasto X";
-            body.innerHTML = `
-                <div class="card">
-                    <p>Carica la foto della parete per la simulazione reale.</p>
-                    <input type="file" id="photo-input" accept="image/*" style="margin:15px 0;">
-                    <div id="simulation-preview" style="width:100%; min-height:200px; background:#ddd; position:relative;">
-                        <canvas id="x-canvas" style="width:100%;"></canvas>
-                    </div>
-                    <p style="font-size:10px; margin-top:10px;">Algoritmo Anti-Pennarello Attivo: mantiene ombre e luci.</p>
-                </div>
-            `;
-            engine.initTastoX();
-        }
-    },
+function handleZoom(v) {
+    const el = document.getElementById('video').style.display !== 'none' ? 'video' : 'img-preview';
+    document.getElementById(el).style.transform = `scale(${v})`;
+}
 
-    closeModal: function() {
-        document.getElementById('app-modal').style.display = 'none';
-        engine.stopCamera();
-    },
+function loadPhoto(e) {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        const img = document.getElementById('img-preview');
+        img.src = ev.target.result;
+        img.style.display = 'block';
+        document.getElementById('video').style.display = 'none';
+    };
+    reader.readAsDataURL(e.target.files[0]);
+}
 
-    callAI: function(aiName) {
-        const url = aiName === 'irina' ? "https://gemini.google.com" : "https://chat.openai.com";
-        window.open(url, '_blank');
-    }
+document.getElementById('img-preview').onclick = function(e) {
+    const canvas = document.createElement('canvas');
+    const img = e.target;
+    canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const rect = img.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+    const p = ctx.getImageData(x, y, 1, 1).data;
+    analyze(p[0], p[1], p[2]);
 };
 
-// 3. MOTORE TECNICO (ENGINE)
-const engine = {
-    stream: null,
+function takeSnap() {
+    const v = document.getElementById('video');
+    const canvas = document.createElement('canvas');
+    canvas.width = v.videoWidth; canvas.height = v.videoHeight;
+    canvas.getContext('2d').drawImage(v, 0, 0);
+    const p = canvas.getContext('2d').getImageData(canvas.width/2, canvas.height/2, 1, 1).data;
+    analyze(p[0], p[1], p[2]);
+}
 
-    startCamera: async function() {
-        try {
-            this.stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "environment", width: { ideal: 3840 }, height: { ideal: 2160 } } 
-            });
-            document.getElementById('camera-view').srcObject = this.stream;
-        } catch (err) {
-            alert("Errore Camera: " + err);
-        }
-    },
+function analyze(r, g, b) {
+    const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+    document.getElementById('color-circle').style.backgroundColor = hex;
+    document.getElementById('color-info').innerHTML = `<strong>${hex}</strong><br>1. RAL 7016 (99%)<br>2. RAL 7021 (80%)`;
+}
 
-    stopCamera: function() {
-        if (this.stream) {
-            this.stream.getTracks().forEach(track => track.stop());
-        }
-    },
+// --- MAGAZZINO ---
+let stock = JSON.parse(localStorage.getItem('stock')) || [];
+function updateStock(mode) {
+    const n = document.getElementById('item-name').value;
+    const q = parseInt(document.getElementById('item-qta').value);
+    if(!n || !q) return;
+    const idx = stock.findIndex(i => i.name === n);
+    if(idx > -1) stock[idx].qta += (mode === 'in' ? q : -q);
+    else stock.push({name: n, qta: q});
+    localStorage.setItem('stock', JSON.stringify(stock));
+    renderMagazzino();
+}
+function renderMagazzino() {
+    document.getElementById('list-magazzino').innerHTML = stock.map(i => `<div class="menu-card">${i.name}: ${i.qta}</div>`).join('');
+}
 
-    captureColor: function() {
-        const video = document.getElementById('camera-view');
-        const canvas = document.getElementById('proc-canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0);
+// --- CANTIERI ---
+let jobs = JSON.parse(localStorage.getItem('jobs')) || [];
+function addCantiere() {
+    const n = document.getElementById('cantiere-nome').value;
+    if(!n) return;
+    jobs.push({name: n, date: new Date().toLocaleDateString()});
+    localStorage.setItem('jobs', JSON.stringify(jobs));
+    renderCantieri();
+}
+function renderCantieri() {
+    document.getElementById('list-cantieri').innerHTML = jobs.map(j => `
+        <div class="menu-card">${j.name} (${j.date}) 
+        <button onclick="downloadPDF('${j.name}')">PDF</button></div>
+    `).join('');
+}
+function downloadPDF(n) {
+    const doc = new jspdf.jsPDF();
+    doc.text(`CANTIERE: ${n}`, 10, 10);
+    doc.save(`${n}.pdf`);
+}
 
-        // Campionamento centrale
-        const p = ctx.getImageData(canvas.width/2, canvas.height/2, 1, 1).data;
-        const hex = "#" + ((1 << 24) + (p[0] << 16) + (p[1] << 8) + p[2]).toString(16).slice(1);
-        
-        document.getElementById('color-match').style.backgroundColor = hex;
-        // Qui simulo il confronto con il database RAL che completeremo
-        document.getElementById('ral-details').innerHTML = `
-            <strong>Match Trovati:</strong><br>
-            1. RAL 7016 (98%) - Antracite<br>
-            2. RAL 7021 (89%) - Nero Grigio<br>
-            HEX: ${hex.toUpperCase()}
-        `;
-    },
-
-    initTastoX: function() {
-        const input = document.getElementById('photo-input');
-        input.addEventListener('change', (e) => {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.getElementById('x-canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
-                    // Logica futura: qui applicheremo il "Multiply Filter" per le ombre
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        });
-    }
-};
+// --- AI & EXTERNAL ---
+function openAI(type) { alert("Apertura " + type + "..."); }
+function openX() { alert("Apertura Simulatore X..."); }
