@@ -3,120 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FR COLOR - Sistema Integrale</title>
+    <title>FR COLOR - Official App</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div id="login-screen" class="screen active">
         <div class="login-card">
-            <img src="logo.png" class="logo-main" alt="FR COLOR">
+            <img src="logo.png" class="logo-main">
             <h2>FR COLOR</h2>
             <input type="password" id="pass" placeholder="Password Accesso">
             <button onclick="checkLogin()" class="btn-primary">ACCEDI</button>
         </div>
     </div>
 
-    <div id="dashboard" class="screen">
+    <div id="main-app" class="screen">
         <header>
-            <img src="logo.png" class="logo-nav">
-            <div class="ai-hub">
-                <button onclick="alert('Irina (Gemini) pronta per l\'analisi')">Irina</button>
-                <button onclick="alert('Carla (ChatGPT) pronta per i consigli')">Carla</button>
+            <img src="logo.png" class="logo-header">
+            <div class="ai-controls">
+                <button onclick="alert('Irina (Gemini) pronta')">Irina</button>
+                <button onclick="alert('Carla (ChatGPT) pronta')">Carla</button>
             </div>
         </header>
 
         <div class="container">
-            <div class="card" onclick="openMod('irina')">
-                <div class="card-text">
-                    <strong>Spettrometro Irina</strong>
-                    <p>Analisi Ultra HD & Codici RAL</p>
+            <div class="card" onclick="openMod('cantieri')">
+                <div class="card-info">
+                    <strong>Gestione Cantieri</strong>
+                    <p>Archivio Foto, Video e Documenti</p>
                 </div>
-                <div class="dot active"></div>
+                <div class="status active">ATTIVO</div>
             </div>
 
-            <div class="card" onclick="openMod('cantieri')">
-                <div class="card-text">
-                    <strong>Gestione Cantiere</strong>
-                    <p>Cartelle Foto, Video & PDF</p>
+            <div class="card" onclick="openMod('irina')">
+                <div class="card-info">
+                    <strong>Spettrometro Irina</strong>
+                    <p>Lettura RAL Ultra HD e % Colore</p>
                 </div>
-                <div class="dot active"></div>
+                <div class="status active">ATTIVO</div>
             </div>
 
             <div class="card" onclick="openMod('magazzino')">
-                <div class="card-text">
-                    <strong>Magazzino & Inventario</strong>
+                <div class="card-info">
+                    <strong>Magazzino Inventario</strong>
                     <p>Materiali e Attrezzature</p>
                 </div>
-                <div class="dot active"></div>
+                <div class="status active">ATTIVO</div>
             </div>
 
             <div class="card disabled">
-                <div class="card-text">
+                <div class="card-info">
                     <strong>Archivio Tecnico</strong>
-                    <p>Documentazione & Gmail</p>
+                    <p>Schede Tecniche PDF e Gmail</p>
                 </div>
-                <div class="dot gray"></div>
+                <div class="status gray">PROX</div>
             </div>
         </div>
 
         <footer class="dock">
             <a href="https://wa.me/39XXXXXXXXXX">WhatsApp</a>
             <a href="mailto:info@frcolor.it">Gmail</a>
-            <button onclick="alert('Avvio Gemini AI...')">♊</button>
-            <button onclick="alert('Avvio ChatGPT...')">🤖</button>
-            <button class="btn-x" onclick="window.open('https://tastox.it')">X</button>
+            <button onclick="alert('Gemini')">♊</button>
+            <button onclick="alert('ChatGPT')">🤖</button>
+            <button class="x-btn" onclick="window.open('https://tastox.it')">X</button>
         </footer>
     </div>
 
     <div id="mod-irina" class="modal">
-        <div class="modal-h"><button onclick="closeMod('irina')">Chiudi</button><h3>IRINA SPETTROMETRO</h3></div>
+        <div class="modal-h"><button onclick="closeMod('irina')">CHIUDI</button><h3>IRINA HD</h3></div>
         <div class="viewport">
             <video id="v" autoplay playsinline></video>
             <img id="img-v" style="display:none;">
             <div id="mirino"></div>
         </div>
-        <div class="controls">
-            <div class="zoom-box">
-                <input type="range" id="zoom" min="1" max="5" step="0.1" value="1" oninput="applyZoom(this.value)">
-                <span>ZOOM</span>
-            </div>
-            <div class="btn-row">
+        <div class="controls-panel">
+            <input type="range" id="zoom" min="1" max="5" step="0.1" value="1" oninput="applyZoom(this.value)">
+            <div class="btn-group">
                 <button onclick="snap()" class="btn-primary">SCATTA</button>
-                <label for="up" class="btn-sec">CARICA</label>
-                <input type="file" id="up" hidden onchange="loadF(event)">
+                <label for="up-f" class="btn-sec">CARICA</label>
+                <input type="file" id="up-f" hidden onchange="loadF(event)">
             </div>
         </div>
-        <div id="result-area">
-            <div id="color-box"></div>
-            <div id="color-info">Punta il mirino sul colore...</div>
+        <div id="result-box">
+            <div id="color-sample"></div>
+            <div id="color-data">Punta il mirino...</div>
         </div>
     </div>
 
     <div id="mod-cantieri" class="modal">
-        <div class="modal-h"><button onclick="closeMod('cantieri')">Indietro</button><h3>I TUOI CANTIERI</h3></div>
-        <div class="p-20">
-            <input type="text" id="c-nome" placeholder="Nome nuovo cantiere (es: Condominio Rossi)">
-            <button onclick="addC()" class="btn-primary">CREA CARTELLA</button>
-            <div id="c-list" class="scroll-area"></div>
+        <div class="modal-h"><button onclick="closeMod('cantieri')">INDIETRO</button><h3>ARCHIVIO CANTIERI</h3></div>
+        <div class="content-padding">
+            <input type="text" id="c-nome" placeholder="Nome Cantiere">
+            <button onclick="addCantiere()" class="btn-primary">CREA CARTELLA</button>
+            <div id="c-list" class="folder-area"></div>
         </div>
     </div>
 
     <div id="mod-magazzino" class="modal">
-        <div class="modal-h"><button onclick="closeMod('magazzino')">Indietro</button><h3>INVENTARIO</h3></div>
-        <div class="tabs">
-            <button id="t-m" class="tab-active" onclick="tabM('mat')">MATERIALI</button>
-            <button id="t-a" onclick="tabM('att')">ATTREZZATURE</button>
+        <div class="modal-h"><button onclick="closeMod('magazzino')">INDIETRO</button><h3>MAGAZZINO</h3></div>
+        <div class="tab-bar">
+            <button id="tab-mat" class="tab-btn active" onclick="switchTab('mat')">MATERIALI</button>
+            <button id="tab-att" class="tab-btn" onclick="switchTab('att')">ATTREZZATURE</button>
         </div>
-        <div class="p-20">
-            <input type="text" id="m-n" placeholder="Nome Articolo">
-            <input type="number" id="m-q" placeholder="Quantità">
-            <textarea id="m-note" placeholder="Note (es: scadenza, fornitore)"></textarea>
-            <div class="btn-row">
-                <button onclick="stock('IN')" class="btn-primary">ENTRATA (+)</button>
-                <button onclick="stock('OUT')" class="btn-sec">USCITA (-)</button>
+        <div class="content-padding">
+            <input type="text" id="m-nome" placeholder="Articolo">
+            <input type="number" id="m-qta" placeholder="Q.tà">
+            <textarea id="m-note" placeholder="Note (scadenza, fornitore...)"></textarea>
+            <div class="btn-group">
+                <button onclick="stockUpdate('IN')" class="btn-primary">ENTRATA (+)</button>
+                <button onclick="stockUpdate('OUT')" class="btn-sec">USCITA (-)</button>
             </div>
-            <div id="m-list" class="scroll-area"></div>
+            <div id="m-list" class="item-list"></div>
         </div>
     </div>
 
